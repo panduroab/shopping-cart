@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
+const db = require('./db/db');
 
 module.exports = () => {
     app.use(logger('dev'));
@@ -9,7 +10,7 @@ module.exports = () => {
     app.use(bodyParser.urlencoded({ extended: false }));
 
     app.get('/', (req, res, next) => {
-        res.send(`Shopping Cart API`)
+        res.send(`Shopping Cart API`);
     });
 
     // catch 404 and forward to error handler
