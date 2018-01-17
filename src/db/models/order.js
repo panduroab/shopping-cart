@@ -3,9 +3,9 @@ const mongoose = require('mongoose'),
     collectionName = 'order';
 
 var OrderSchema = new Schema({
-    status: { type: String, default: 'pending' },
-    date: { type: Date, default: Date.now },
-    products: { type: Array },
+    status   : { type: String, default: 'pending' },
+    date     : { type: Date, default: Date.now },
+    products : { type: Array },
     client_id: { type: Int }
 });
 
