@@ -8,7 +8,10 @@ module.exports = (app, bodyParser, logger) => {
 
     // #region GET ------------------------------------------------------------------------------------
     route.get('/', (req, res) => {
-        res.status(200).send('Client deleted');
+        OrderModel.find({}, (err, order)=>{
+            if(err) res.status(500).send('Internal Server Error');
+            res.status(200).send(order);
+        });
     });
     // #endregion
     // #region POST -----------------------------------------------------------------------------------
