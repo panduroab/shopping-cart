@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 const collectionName = 'product';
 
 var productSchema = new Schema({
-    name        : String,
-    price       : Number,
-    description : String
+    name:        { type: String },
+    price:       { type: Number },
+    description: { type: String }
 });
 
 let productModule = mongoose.model(collectionName, productSchema);
