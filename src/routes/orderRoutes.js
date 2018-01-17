@@ -41,7 +41,7 @@ module.exports = (app, bodyParser, logger) => {
                 doc.products = req.body.products || doc.products;
                 doc.client_id = req.body.client_id || doc.client_id;
                 // doc.created_at = req.body.created_at || doc.created_at;
-                doc.updated_at = Date.now;
+                doc.updated_at = Date.now();
                 // doc.deleted_at = req.body.deleted_at || doc.deleted_at;
 
                 // Update the document
