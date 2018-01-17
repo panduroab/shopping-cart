@@ -4,10 +4,10 @@ const collectionName = 'product';
 
 
 var productSchema = new Schema({
-    id: Number,
-    name: String,
-    price: Number,
-    description: String
+    id          : Number,
+    name        : String,
+    price       : Number,
+    description : String
 });
 
 let productModule = mongoose.model(collectionName, productSchema);
