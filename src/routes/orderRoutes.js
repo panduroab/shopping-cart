@@ -14,6 +14,14 @@ module.exports = (app, bodyParser, logger) => {
         });
     });
     // #endregion
+    // #region GET ------------------------------------------------------------------------------------
+    route.get('/:id', (req, res) => {
+        OrderModel.findById(req.params.id, (err, order)=>{
+            if(err) res.status(500).send('Internal Server Error');
+            res.status(200).send(order);
+        });
+    });
+    // #endregion
     // #region POST -----------------------------------------------------------------------------------
     route.post('/', (req, res) => {
         console.log(req.body);
