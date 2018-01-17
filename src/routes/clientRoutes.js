@@ -5,10 +5,24 @@ module.exports = (app, bodyParser, logger) => {
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
 }
-//GET
+//Get all
 route.get('/',(req,res)=>{
-
+    //Get all the clients from DB
+    clientOrder.find({}).exec((err, docs) => {
+		if (err)
+			res.status(404).send(err);
+		res.status(200).send(docs);
+	});
     res.status(200)
+})
+//Get by ID
+route.get('/:id',(res,req)=>{
+    //Get a client by his ID
+    clientOrder.findById(req.params.id, (err, doc) => {
+		if (err)
+			res.status(404).send(err);
+		res.status(200).send(doc);
+	});
 })
 //Post
 route.post('/',(req,res)=>{
