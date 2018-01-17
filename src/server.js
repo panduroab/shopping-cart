@@ -3,6 +3,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 const db = require('./db/db');
+const OrderRoutes = require('./routes/orderRoutes')(app);
 
 module.exports = () => {
     app.use(logger('dev'));

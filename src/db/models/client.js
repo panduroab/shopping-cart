@@ -10,5 +10,5 @@ var clientSchema = new Schema({
     address : String
 });
 
-var  clientModel = mongoose.model(collectionName,schema);
+var  clientModel = mongoose.model(collectionName,clientSchema);
 module.exports = clientSchema;
