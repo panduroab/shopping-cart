@@ -41,7 +41,7 @@ route.post('/',(req,res)=>{
     client.save((err, data) => {
 		if (err)
 			res.status(404).send(err);
-		res.status(200).send({ success: true, msg: 'Client Registred', data: data });
+		res.status(200).send({ success: true, msg: 'Client Registered', data: data });
 	});
     res.status(200)
 })

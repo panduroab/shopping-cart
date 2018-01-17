@@ -4,7 +4,6 @@ const collectionName = 'product';
 
 
 var productSchema = new Schema({
-    id          : Number,
     name        : String,
     price       : Number,
     description : String
