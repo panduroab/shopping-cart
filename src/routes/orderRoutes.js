@@ -14,6 +14,14 @@ module.exports = (app, bodyParser, logger) => {
         });
     });
     // #endregion
+    // #region GET ------------------------------------------------------------------------------------
+    route.get('/:id', (req, res) => {
+        OrderModel.findById(req.params.id, (err, order)=>{
+            if(err) res.status(500).send('Internal Server Error');
+            res.status(200).send(order);
+        });
+    });
+    // #endregion
     // #region POST -----------------------------------------------------------------------------------
     route.post('/', (req, res) => {
         console.log(req.body);
@@ -41,7 +49,7 @@ module.exports = (app, bodyParser, logger) => {
                 doc.products = req.body.products || doc.products;
                 doc.client_id = req.body.client_id || doc.client_id;
                 // doc.created_at = req.body.created_at || doc.created_at;
-                doc.updated_at = Date.now;
+                doc.updated_at = Date.now();
                 // doc.deleted_at = req.body.deleted_at || doc.deleted_at;
 
                 // Update the document

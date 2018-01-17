@@ -23,7 +23,22 @@ module.exports = (app, bodyParser, logger) => {
     // #endregion
     // #region POST -----------------------------------------------------------------------------------
     route.post('/', (req, res) => {
-
+        //Check that it doesn't content a null
+        if(!req.body.name||!req.body.price||!req.body.description){
+            return res.status(206).send({ success: false, msg: 'It\'s necessary to have all the attributes', data: req.body });
+            let pruduct = new ProductModel({
+                name        : req.body.name,
+                price       : req.body.price,
+                description : req.body.description
+            })
+        }
+        product.save((err, data) => {
+            if (err)
+                res.status(404).send(err);
+            res.status(200).send({ success: true, msg: 'Product Registered', data: data });
+        });
+        res.status(200)
+        
     });
     // #endregion
     // #region PUT ------------------------------------------------------------------------------------
