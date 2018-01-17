@@ -8,16 +8,16 @@ module.exports = (app, bodyParser, logger) => {
 
     // #region GET ------------------------------------------------------------------------------------
     route.get('/', (req, res) => {
-        OrderModel.find({}, (err, order)=>{
-            if(err) res.status(500).send('Internal Server Error');
+        OrderModel.find({}, (err, order) => {
+            if (err) res.status(500).send('Internal Server Error');
             res.status(200).send(order);
         });
     });
     // #endregion
     // #region GET ------------------------------------------------------------------------------------
     route.get('/:id', (req, res) => {
-        OrderModel.findById(req.params.id, (err, order)=>{
-            if(err) res.status(500).send('Internal Server Error');
+        OrderModel.findById(req.params.id, (err, order) => {
+            if (err) res.status(500).send('Internal Server Error');
             res.status(200).send(order);
         });
     });
@@ -30,8 +30,8 @@ module.exports = (app, bodyParser, logger) => {
             date: req.body.date,
             products: req.body.products,
             client_id: req.body.client_id
-        }, (err, order)=>{
-            if(err) res.status(500).send('Internal Server Error');
+        }, (err, order) => {
+            if (err) res.status(500).send('Internal Server Error');
             res.status(200).send('OK');
         });
     });
@@ -64,11 +64,11 @@ module.exports = (app, bodyParser, logger) => {
     // #endregion
     // #region DELETE ---------------------------------------------------------------------------------
     route.delete('/:id', (req, res) => {
-        // console.log(req.params.id);
-        // Cliente.findByIdAndRemove(req.params.id, (err, user) => {
-        //     if (err) return;
-        //     res.status(200).send('Client deleted');
-        // });
+        OrderModel.findByIdAndRemove(req.params.id, (err, order) => {
+            if (err) res.status(500).send('Internal Server Error');
+            res.status(200).send('OK delete ' + req.params.id);
+        }
+        );
     });
     // #endregion
 
