@@ -1,5 +1,8 @@
 const express = require('express');
-module.exports = (app) => {
+module.exports = (app, bodyParser, logger) => {
+    app.use(bodyParser.json());
+    app.use(logger('dev'));
+    app.use(bodyParser.urlencoded({ extended: false }));
     const route = express.Router(),
         OrderModel = require('../db/models/order');
 
@@ -10,12 +13,21 @@ module.exports = (app) => {
     // #endregion
     // #region POST -----------------------------------------------------------------------------------
     route.post('/', (req, res) => {
-
+        console.log(req.body);
+        OrderModel.create({
+            status: req.body.status,
+            date: req.body.date,
+            products: req.body.products,
+            client_id: req.body.client_id
+        }, (err, order)=>{
+            if(err) res.status(500).send('Internal Server Error');
+            res.status(200).send('');
+        });
     });
     // #endregion
     // #region PUT ------------------------------------------------------------------------------------
     route.put('/:id', (req, res) => {
-
+        
     });
     // #endregion
     // #region DELETE ---------------------------------------------------------------------------------
