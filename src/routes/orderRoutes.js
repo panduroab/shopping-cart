@@ -21,7 +21,7 @@ module.exports = (app, bodyParser, logger) => {
             client_id: req.body.client_id
         }, (err, order)=>{
             if(err) res.status(500).send('Internal Server Error');
-            res.status(200).send('');
+            res.status(200).send('OK');
         });
     });
     // #endregion
