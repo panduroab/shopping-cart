@@ -1,5 +1,8 @@
 const express = require('express');
-module.exports = (app) => {
+module.exports = (app, bodyParser, logger) => {
+    app.use(bodyParser.json());
+    app.use(logger('dev'));
+    app.use(bodyParser.urlencoded({ extended: false }));
     const route = express.Router(),
         ProductModel = require('../db/models/product');
 
