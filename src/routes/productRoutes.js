@@ -8,7 +8,17 @@ module.exports = (app, bodyParser, logger) => {
 
     // #region GET ------------------------------------------------------------------------------------
     route.get('/', (req, res) => {
-        res.status(200).send('GetProduct');
+        ProductModel.find({}, (err,prod) => {
+            if(err) res.status(500).send("Internal Server Error");
+            res.status(200).send(prod);
+        });
+    });
+
+    route.get('/:id', (req, res) => {
+        ProductModel.findById(req.params.id, (err,prod) => {
+            if(err) res.status(500).send("Internal Server Error");
+            res.status(200).send(prod);
+        });
     });
     // #endregion
     // #region POST -----------------------------------------------------------------------------------
