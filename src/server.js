@@ -5,6 +5,7 @@ const app = express();
 const db = require('./db/db');
 const OrderRoutes = require('./routes/orderRoutes')(app, bodyParser, logger);
 const ProductRoutes = require('./routes/productRoutes')(app, bodyParser, logger);
+const ClientRoutes = require('./routes/clientRoutes')(app, bodyParser, logger);
 
 module.exports = () => {
     app.use(logger('dev'));

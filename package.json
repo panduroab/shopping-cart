@@ -13,12 +13,11 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "mongoose": "^4.13.9",
-    "morgan": "^1.9.0",
-    "nodemon": "^1.14.11"
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "mocha": "^4.1.0",
+    "mocha": "~3.5.3",
     "nodemon": "^1.14.11",
     "supertest": "^3.0.0"
   }
