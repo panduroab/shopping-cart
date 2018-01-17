@@ -3,6 +3,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 const db = require('./db/db');
+const ProductRoutes = require('./routes/productRoutes');
 
 module.exports = () => {
     app.use(logger('dev'));
@@ -14,6 +15,7 @@ module.exports = () => {
     });
 
     
+    app.use('/products', ProductRoutes);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
