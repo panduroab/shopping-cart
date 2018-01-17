@@ -3,7 +3,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 const db = require('./db/db');
-const ProductRoutes = require('./routes/productRoutes');
+const OrderRoutes = require('./routes/orderRoutes')(app);
+const ProductRoutes = require('./routes/productRoutes')(app);
 
 module.exports = () => {
     app.use(logger('dev'));
@@ -13,9 +14,6 @@ module.exports = () => {
     app.get('/', (req, res, next) => {
         res.send(`Shopping Cart API`);
     });
-
-    
-    app.use('/products', ProductRoutes);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
