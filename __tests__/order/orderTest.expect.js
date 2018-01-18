@@ -5,8 +5,8 @@ const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db');
 
 describe('API Order', function () {
-    // db({ domain: '127.0.0.1', port: '27017', dbNme: 'shopping-cart' });
-    // server.listen(3000, () => console.log('Server is running at:', 3000));
+    db({ domain: '127.0.0.1', port: '27017', dbNme: 'shopping-cart' });
+    server.listen(3000, () => console.log('Server is running at:', 3000));
     it('GET should fetch all orders', done => {
         api.get('/api/order')
             .set('Accept', 'application/json')
@@ -22,7 +22,7 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
-        let id = '5a5f7aa660373a0c27edf708';
+        let id = '5a60f0af3ee66202e646aeba';
         api.get(`${url}/${id}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
