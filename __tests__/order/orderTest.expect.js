@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const chai = require('chai');
+const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
 
 describe('API Order', function () {
@@ -13,7 +14,7 @@ describe('API Order', function () {
                 done();
             })
             .catch(err => {
-                console.log(err);
+                done(err);
             });
     });
     it('Should get order /id', done => {
@@ -27,7 +28,7 @@ describe('API Order', function () {
                 done();
             })
             .catch(err => {
-                console.log(err);
+                done(err);
             });
     });
     it('POST should create an order', done => {
@@ -35,6 +36,7 @@ describe('API Order', function () {
         supertest(server).post('/api/order')
             .set('Accept', 'application/json')
             .send(orderObj)
+            .expect('content-Type', /text/)
             .expect(200)
             .then(res => done())
             .catch(err => done(err));
@@ -47,10 +49,11 @@ describe('API Order', function () {
             .expect('Content-Type', /text/)
             .expect(200)
             .then(res => {
+                console.log(res);
                 done();
             })
             .catch(err => {
-                console.log(err);
+                done(err);
             });
     });
 });
