@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes')(app, bodyParser, logger);
+const ClientRoutes = require('./routes/clientRoutes')(app, bodyParser, logger);
 
 module.exports = () => {
 
