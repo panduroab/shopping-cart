@@ -1,4 +1,4 @@
-const app = require('./src/server')();
+const app = require('./src/server')({logger : false});
 const db = require('./src/db/db');
 const port = 3000;
 
