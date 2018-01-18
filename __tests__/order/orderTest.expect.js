@@ -41,6 +41,26 @@ describe('API Order', function () {
             .then(res => done())
             .catch(err => done(err));
     });
+    it('Should put an order', done => {
+        let orderObj = {
+            "status": "pending",
+            "date": "2018-01-18T18:51:49.207Z",
+            "products": [],
+            "created_at": "2018-01-18T18:51:49.207Z",
+            "updated_at": "2018-01-18T18:51:49.207Z",
+            "deleted_at": "2018-01-18T18:51:49.207Z",
+            "_id": "5a60ecc523ac9505ff84dd2d",
+            "client_id": 1,
+            "__v": 0
+        };
+        supertest(server).put(`/api/order/${orderObj._id}`)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .send(orderObj)
+            .expect(200)
+            .then(res => done())
+            .catch(err => done(err));
+    });
     it('Should delete order /id', done => {
         let url = '/api/order';
         let id = '5a5f7aa660373a0c27edf708';
@@ -49,7 +69,7 @@ describe('API Order', function () {
             .expect('Content-Type', /text/)
             .expect(200)
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 done();
             })
             .catch(err => {
