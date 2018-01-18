@@ -6,9 +6,8 @@ const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes')(app, bodyParser, logger);
 const ClientRoutes = require('./routes/clientRoutes')(app, bodyParser, logger);
 
-module.exports = () => {
-
-    app.use(logger('dev'));
+module.exports = config => {
+    if(config.logger) app.use(logger(config.logger));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
 
