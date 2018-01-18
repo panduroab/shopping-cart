@@ -8,7 +8,7 @@ describe('Database connection (mongoDB)', () => {
         port: '27017',
         dbName: 'shopping-cart'
     };
-    it(`should connect to: ${config.domain}:${config.port}:${config.dbName}`, done => {
+    it(`should connect to: mongodb://${config.domain}:${config.port}:${config.dbName}`, done => {
         db(config).then(res => {
             // console.log(res);
             done();
