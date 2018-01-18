@@ -1,43 +1,45 @@
-const route  = require('express').Router();
-const clientOrder = require('../db/models/client');
-module.exports = (app, bodyParser, logger) => {
-    app.use(bodyParser.json());
-    app.use(logger('dev'));
-    app.use(bodyParser.urlencoded({ extended: false }));
-}
+const express = require('express');
+const router = express.Router();
+const ClientModel = require('../db/models/client');
+
 //Get all
-route.get('/',(req,res)=>{
+router.get('/',(req,res)=>{
     //Get all the clients from DB
-    clientOrder.find({}).exec((err, docs) => {
-		if (err)
-			res.status(404).send(err);
-		res.status(200).send(docs);
-	});
-    res.status(200)
-})
+    ClientModel.find({}).exec((err, docs) => {
+        if (err)
+            res.status(404).send(err);
+        res.status(200).send(docs);
+    });
+    res.status(200);
+});
+
 //Get by ID
-route.get('/:id',(res,req)=>{
+router.get('/:id',(res,req)=>{
     //Get a client by his ID
-    clientOrder.findById(req.params.id, (err, doc) => {
-		if (err)
-			res.status(404).send(err);
-		res.status(200).send(doc);
-	});
-})
+    ClientModel.findById(req.params.id, (err, doc) => {
+        if (err)
+            res.status(404).send(err);
+        res.status(200).send(doc);
+    });
+});
+
 //Post
-route.post('/',(req,res)=>{
-        clientOrder.create({
-            name        : req.body.name,
-            lastnamefa  : req.body.lastnamefa,
-            lastnamemo  : req.body.lastnamemo,
-            birthdate   : req.body.birthdate,
-            address     : req.body.address
-        },(err, order)=>{
-            if(err) res.status(500).send('Internal Server Error');
-            res.status(200).send('Client registered');
-        })
-})
+router.post('/',(req,res)=>{
+    ClientModel.create({
+        name        : req.body.name,
+        lastnamefa  : req.body.lastnamefa,
+        lastnamemo  : req.body.lastnamemo,
+        birthdate   : req.body.birthdate,
+        address     : req.body.address
+    },(err, order)=>{
+        if(err) res.status(500).send('Internal Server Error');
+        res.status(200).send('Client registered');
+    });
+});
+
 //Delete
-route.delete('/:id',(req, res)=>{
-    res.status(200)
-})
+router.delete('/:id',(req, res)=>{
+    res.status(200);
+});
+
+module.exports = router;

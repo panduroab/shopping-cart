@@ -1,14 +1,10 @@
 const supertest = require('supertest');
-const api = supertest('http://localhost:3000');
 const chai = require('chai');
 const server = require('../../src/server')({ logger: false });
-const db = require('../../src/db/db');
 
 describe('API Order', function () {
-    db({ domain: '127.0.0.1', port: '27017', dbNme: 'shopping-cart' });
-    server.listen(3000, () => console.log('Server is running at:', 3000));
     it('GET should fetch all orders', done => {
-        api.get('/api/order')
+        supertest(server).get('/api/order')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -23,7 +19,7 @@ describe('API Order', function () {
     it('Should get order /id', done => {
         let url = '/api/order';
         let id = '5a60ecc523ac9505ff84dd2d';
-        api.get(`${url}/${id}`)
+        supertest(server).get(`${url}/${id}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -36,25 +32,25 @@ describe('API Order', function () {
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
-        api.post('/api/order')
+        supertest(server).post('/api/order')
             .set('Accept', 'application/json')
             .send(orderObj)
             .expect(200)
             .then(res => done())
             .catch(err => done(err));
     });
-    // it('Should delete order /id', done => {
-    //     let url = '/api/order';
-    //     let id = '5a5f7aa660373a0c27edf708';
-    //     api.delete(`${url}/${id}`)
-    //         .set('Accept', 'application/json')
-    //         .expect('Content-Type', /json/)
-    //         .expect(200)
-    //         .then(res => {
-    //             done();
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // });
+    it('Should delete order /id', done => {
+        let url = '/api/order';
+        let id = '5a5f7aa660373a0c27edf708';
+        supertest(server).delete(`${url}/${id}`)
+            // .set('Accept', 'application/json')
+            .expect('Content-Type', /text/)
+            .expect(200)
+            .then(res => {
+                done();
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
 });
