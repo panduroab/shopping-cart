@@ -23,17 +23,33 @@ describe('API Order', function () {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => done())
+            .catch(err => console.log(err));
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
         supertest(server).post('/api/order')
             .set('Accept', 'application/json')
+            .send(orderObj)
+            .expect(200)
+            .then(res => done())
+            .catch(err => done(err));
+    });
+    it('Should put an order', done => {
+        let orderObj = {
+            "status": "pending",
+            "date": "2018-01-18T18:51:49.207Z",
+            "products": [],
+            "created_at": "2018-01-18T18:51:49.207Z",
+            "updated_at": "2018-01-18T18:51:49.207Z",
+            "deleted_at": "2018-01-18T18:51:49.207Z",
+            "_id": "5a60ecc523ac9505ff84dd2d",
+            "client_id": 1,
+            "__v": 0
+        };
+        supertest(server).put(`/api/order/${orderObj._id}`)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
             .send(orderObj)
             .expect(200)
             .then(res => done())
@@ -46,11 +62,7 @@ describe('API Order', function () {
             // .set('Accept', 'application/json')
             .expect('Content-Type', /text/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => done())
+            .catch(err => console.log(err));
     });
 });
