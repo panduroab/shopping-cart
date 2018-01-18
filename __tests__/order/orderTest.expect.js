@@ -1,14 +1,10 @@
 const supertest = require('supertest');
-const api = supertest('http://localhost:3000');
 const chai = require('chai');
 const server = require('../../src/server')({ logger: false });
-const db = require('../../src/db/db');
 
 describe('API Order', function() {
-    // db({ domain: '127.0.0.1', port: '27017', dbNme: 'shopping-cart' });
-    // server.listen(3000, () => console.log('Server is running at:', 3000));
     it('GET should fetch all orders', done => {
-        api.get('/api/order')
+        supertest(server).get('/api/order')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -22,7 +18,7 @@ describe('API Order', function() {
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
-        api.post('/api/order')
+        supertest(server).post('/api/order')
             .set('Accept', 'application/json')
             .send(orderObj)
             .expect(200)
