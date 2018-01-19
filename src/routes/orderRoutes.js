@@ -48,6 +48,8 @@ router.put('/:id', (req, res) => {
                     res.status(500).send(err);
                 res.status(200).send(doc);
             });
+        } else {
+            res.status(404).send(err);
         }
     });
 });

@@ -16,6 +16,7 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
+        orderController.getOrder('5a6223572aefba0b51a289e8').then(result=>{console.log(result)});
         orderController.getRandomOrder().then(result => {
             order = result;
             let id = order._id;
@@ -55,7 +56,7 @@ describe('API Order', function () {
                 .expect(200)
                 .then(res => done())
                 .catch(err => done(err));
-        });
+        })
     });
     it('Should delete order /id', done => {
         let url = '/api/order';

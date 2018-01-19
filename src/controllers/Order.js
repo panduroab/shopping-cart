@@ -1,9 +1,12 @@
 const orderModel = require('../db/models/order');
 
 module.exports = () => ({
-    getOrder: id => {
-
-    },
+    getOrder: id => new Promise((resolve, reject) => {
+        orderModel.findById(id, (err, doc) => {
+            console.log(doc);
+            resolve(doc)
+        });
+    }),
     getAllOrders: () => {
 
     },
@@ -19,5 +22,5 @@ module.exports = () => ({
             resolve(order);
         });
     }),
-    a:'a'
+    a: 'a'
 });
