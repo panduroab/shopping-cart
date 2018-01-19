@@ -1,9 +1,18 @@
 const supertest = require('supertest');
 const chai = require('chai');
 const assert = require('assert');
-const server = require('../../src/server')({ logger: false });
-
 const productController = require('../../src/controllers/Product')();
+
+const config = {
+    logger: 'dev',
+    dbConfig: {
+        domain: '127.0.0.1',
+        port: '27017',
+        dbName: 'shopping-cart'
+    }
+};
+
+const server = require('../../src/server')(config);
 
 describe('API Product', function () {
     it('GET should fetch all products', done => {
@@ -26,6 +35,8 @@ describe('API Product', function () {
                 .expect(200)
                 .then(res => done())
                 .catch(err => done(err));
+        }).catch(err => {
+            done(err);
         });
     });
     it('POST should create an product', done => {
@@ -50,7 +61,9 @@ describe('API Product', function () {
                 .expect(200)
                 .then(res => done())
                 .catch(err => done(err));
-        })
+        }).catch(err => {
+            done(err);
+        });
     });
     it('Should delete product /id', done => {
         let url = '/api/product';
@@ -62,6 +75,8 @@ describe('API Product', function () {
                 .expect(200)
                 .then(res => done())
                 .catch(err => done(err));
+        }).catch(err => {
+            done(err);
         });
     });
 });
