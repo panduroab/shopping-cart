@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const chai = require('chai');
-const assert = require('assert');
+const assert = require('assert').assert;
 const server = require('../../src/server')({ logger: false });
 
 describe('API Order', function () {
@@ -14,7 +14,7 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
-        let id = '5a60ecc523ac9505ff84dd2d';
+        let id = '5a60ecd423ac9505ff84dd2e';
         supertest(server).get(`${url}/${id}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -32,7 +32,7 @@ describe('API Order', function () {
             .then(res => done())
             .catch(err => done(err));
     });
-    it('Should put an order', done => {
+    it('Should put an order /id', done => {
         let orderObj = {
             "status": "pending",
             "date": "2018-01-18T18:51:49.207Z",
@@ -40,7 +40,7 @@ describe('API Order', function () {
             "client_id": 1,
             "__v": 0
         };
-        let objId = '5a60ecc523ac9505ff84dd2d';
+        let objId = '5a60ecc523ac9505ff84dd2';
         supertest(server).put(`/api/order/${objId}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
