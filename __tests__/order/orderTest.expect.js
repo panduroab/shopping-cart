@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const chai = require('chai');
-const assert = require('assert');
+const assert = require('assert').assert;
 const server = require('../../src/server')({ logger: false });
 
 const orderController = require('../../src/controllers/Order')();
@@ -16,11 +16,9 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
-        let order;
         orderController.getRandomOrder().then(result => {
             order = result;
             let id = order._id;
-
             supertest(server).get(`${url}/${id}`)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -39,7 +37,7 @@ describe('API Order', function () {
             .then(res => done())
             .catch(err => done(err));
     });
-    it('Should put an order', done => {
+    it('Should put an order /id', done => {
         let orderObj = {
             "status": "pending",
             "date": "2018-01-18T18:51:49.207Z",
