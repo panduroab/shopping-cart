@@ -46,6 +46,8 @@ module.exports = () => ({
 
     getRamProduct: () => new Promise((resolve, reject) => {
         productModel.find({}, (err, docs) => {
+            if(err || docs.length < 1)
+                reject(err);
             let product = docs.splice(0, 1)[0];
             resolve(product);
         });

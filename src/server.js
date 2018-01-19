@@ -9,9 +9,15 @@ const db = require('./db/db');
 const path = require('path');
 
 module.exports = config => {
-    db({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' });
+    db(config.dbConfig).then(connection => {
+        if(config.logger)
+            console.log('Connected to MongoDB succesfully!!');
+    }).catch(err => {
+        console.log(err);
+    });
 
-    if(config.logger) app.use(logger(config.logger));
+    if(config.logger)
+        app.use(logger(config.logger));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
 
