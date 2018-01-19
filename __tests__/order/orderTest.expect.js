@@ -50,7 +50,7 @@ describe('API Order', function () {
             let id = order._id;
             supertest(server).put(`/api/order/${id}`)
                 .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
+                .expect('Content-Type', /text/)
                 .send(orderObj)
                 .expect(200)
                 .then(res => done())
@@ -63,7 +63,7 @@ describe('API Order', function () {
             let order = result;
             let id = order._id;
             supertest(server).delete(`${url}/${id}`)
-                // .set('Accept', 'application/json')
+                .set('Accept', 'application/json')
                 .expect('Content-Type', /text/)
                 .expect(200)
                 .then(res => done())
@@ -71,3 +71,16 @@ describe('API Order', function () {
         });
     });
 });
+
+// describe('CONTROLLER Order', () => {
+//     let url = '/api/order';
+//     it('Should get order /id', done => {
+//         supertest(server).get(`${url}/${id}`)
+//         .set('Accept', 'application/json')
+//         .expect('Content-Type', /json/)
+//         .expect(200)
+//         .then(res => done())
+//         .catch(err => done(err));
+//         done();
+//     });
+// });
