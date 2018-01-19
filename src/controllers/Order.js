@@ -44,9 +44,10 @@ module.exports = () => ({
     
     getRandomOrder: () => new Promise((resolve, reject) => {
         orderModel.find({}, (err, docs) => {
+            if(err || docs.length < 1)
+                reject(err);
             let order = docs.splice(0, 1)[0];
             resolve(order);
-            reject(err);
         });
     })
 });

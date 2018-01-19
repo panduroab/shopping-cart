@@ -23,18 +23,15 @@ router.post('/', (req, res) => {
         client_id: req.body.client_id
     }, (err, order) => {
         if (err)
-            res.status(500).send('Internal Server Error');
-        res.status(200).send('OK');
+            res.status(500).send({});
+        res.status(200).send(order);
     });
 });
 
 router.put('/:id', (req, res) => {
-    // if (typeof (req.body.status) === 'string' &&
-    //     typeof (req.body.date) === 'string' && // verificar formato de fecha
-    //     typeof (req.body.created_at) === 'string' &&
-    //     typeof (req.body.updated_at) === 'string' &&
-    //     typeof (req.body.deleted_at) === 'string' &&
-    //     typeof (req.body.client_id) === 'number') {
+    if (typeof (req.body.status) === 'string' &&
+        typeof (req.body.date) === 'string' && // verificar formato de fecha
+        typeof (req.body.client_id) === 'number') {
         let id = req.params.id,
             body = req.body;
         OrderModel.findById(id, (err, doc) => {
@@ -55,18 +52,18 @@ router.put('/:id', (req, res) => {
                 res.status(404).send(err);
             }
         });
-    // } else {
-    //     res.status(400).send('Bad request');
-    // }
+    } else {
+            res.status(400).send({});
+    }
 });
 
 router.delete('/:id', (req, res) => {
     OrderModel.findByIdAndRemove(req.params.id, (err, order) => {
         if (err) res.status(500).send('Internal Server Error');
         if (order)
-            res.status(200).send('OK delete ' + order);
+            res.status(200).send(order);
         else
-            res.status(404).send('NOT OK');
+            res.status(404).send({});
     }
     );
 });
