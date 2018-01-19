@@ -3,24 +3,23 @@ const chai = require('chai');
 const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
 
-const orderController = require('../../src/controllers/Order')();
+const productController = require('../../src/controllers/Product')();
 
-describe('API Order', function () {
-    it('GET should fetch all orders', done => {
-        supertest(server).get('/api/order')
+describe('API Product', function () {
+    it('GET should fetch all products', done => {
+        supertest(server).get('/api/product')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
             .then(res => done())
             .catch(err => done(err));
     });
-    it('Should get order /id', done => {
-        let url = '/api/order';
-        let order;
-        orderController.getRandomOrder().then(result => {
-            order = result;
-            let id = order._id;
-
+    it('Should get product /id', done => {
+        let url = '/api/product';
+        let product;
+        productController.getRamProduct().then(result => {
+            product = result;
+            let id = product._id;
             supertest(server).get(`${url}/${id}`)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -29,41 +28,36 @@ describe('API Order', function () {
                 .catch(err => done(err));
         });
     });
-    it('POST should create an order', done => {
-        let orderObj = { status: 'pending', products: [], client_id: 1 };
-        supertest(server).post('/api/order')
+    it('POST should create an product', done => {
+        let productObj = { name: 'test', price: 1, description: 'test description' };
+        supertest(server).post('/api/product')
             .set('Accept', 'application/json')
-            .send(orderObj)
+            .send(productObj)
             .expect('content-Type', /text/)
             .expect(200)
             .then(res => done())
             .catch(err => done(err));
     });
-    it('Should put an order', done => {
-        let orderObj = {
-            "status": "pending",
-            "date": "2018-01-18T18:51:49.207Z",
-            "products": [],
-            "client_id": 1,
-            "__v": 0
-        };
-        orderController.getRandomOrder().then(result => {
-            order = result;
-            let id = order._id;
-            supertest(server).put(`/api/order/${id}`)
+    it('Should put an product', done => {
+        let productObj = { name: 'test', price: 1, description: 'test description' };
+        productController.getRamProduct().then(result => {
+            product = result;
+            let id = product._id;
+
+            supertest(server).put(`/api/product/${id}`)
                 .set('Accept', 'application/json')
-                .expect('Content-Type', /json/)
-                .send(orderObj)
+                .expect('Content-Type', /text/)
+                .send(productObj)
                 .expect(200)
                 .then(res => done())
                 .catch(err => done(err));
         })
     });
-    it('Should delete order /id', done => {
-        let url = '/api/order';
-        orderController.getRandomOrder().then(result => {
-            let order = result;
-            let id = order._id;
+    it('Should delete product /id', done => {
+        let url = '/api/product';
+        productController.getRamProduct().then(result => {
+            let product = result;
+            let id = product._id;
             supertest(server).delete(`${url}/${id}`)
                 // .set('Accept', 'application/json')
                 .expect('Content-Type', /text/)
@@ -73,3 +67,5 @@ describe('API Order', function () {
         });
     });
 });
+
+
