@@ -1,26 +1,27 @@
-* SHOPPING-CAR
+SHOPPING-CAR
 
-* Getting Started
+Getting Started
 
-* Prerequisites
+Prerequisites
 
-Project have dependencies that require:
+* Project have dependencies that require:
 node v8.9.4, mongo v3.6.1, together with NPM 5.6.0
 
-* Installing
+Installing
 
-npm install
+* npm install
 
-* Running the tests
+Running the tests
 
-Project require running mongod
-npm test
+* Project require running mongod
+* npm test
 
-* Authors
+Authors
 
-GerardoGuti
-JFrankLL
-MarioGutierrezM
-ssmarin
+* GerardoGuti
+* JFrankLL
+* MarioGutierrezM
+* ssmarin
 
-* License
+License
+* MIT
