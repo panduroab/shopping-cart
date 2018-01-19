@@ -1,84 +1,72 @@
 const supertest = require('supertest');
 const chai = require('chai');
+const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
-var id = '';
-var id2 = '';
-var productObj = { name: 'Test', price: 5, description: 'test description' } ;
+
+const productController = require('../../src/controllers/Product')();
 
 describe('API Product', function () {
-
-    it('POST product', done => {
-        supertest(server).post('/api/product')
-            .set('Accept', 'application/json')
-            .send(productObj)
-            .expect('Content-Type', /text/)
-            .expect(200)
-            .then(res => {
-                //id2 = res.body;
-                //console.log(id2);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    });
-
     it('GET should fetch all products', done => {
         supertest(server).get('/api/product')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                id = res.body[0]._id;
-                console.log(id);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
+    it('Should get product /id', done => {
+        let url = '/api/product';
+        let product;
+        productController.getRamProduct().then(result => {
+            product = result;
+            let id = product._id;
 
-    it('GET product id', done => {
-        supertest(server).get(`/api/product/${id}`)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .then(res => {
-                console.log(res.body);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            supertest(server).get(`${url}/${id}`)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        });
     });
-
-    it('PUT product', done => {
-        let productObj = { name: 'newtest1234', price: 100, description: 'new test description' }
-        supertest(server).put(`/api/product/${id}`)
+    it('POST should create an product', done => {
+        let productObj = { name: 'test', price: 1, description: 'test description' };
+        supertest(server).post('/api/product')
             .set('Accept', 'application/json')
             .send(productObj)
-            .expect('Content-Type', /text/)
+            .expect('content-Type', /text/)
             .expect(200)
-            .then(res => {
-                console.log(res.body);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
-    
-    /*
-        it('DELETE product', done => {
-            supertest(server).delete('/api/product/5a61010e62040b04cae8e13c')
+    it('Should put an product', done => {
+        let productObj = { name: 'test', price: 1, description: 'test description' };
+        productController.getRamProduct().then(result => {
+            product = result;
+            let id = product._id;
+
+            supertest(server).put(`/api/product/${id}`)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /text/)
+                .send(productObj)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        })
+    });
+    it('Should delete product /id', done => {
+        let url = '/api/product';
+        productController.getRamProduct().then(result => {
+            let product = result;
+            let id = product._id;
+            supertest(server).delete(`${url}/${id}`)
+                // .set('Accept', 'application/json')
                 .expect('Content-Type', /text/)
                 .expect(200)
-                .then(res => {
-                    done();
-                })
-                .catch(err => {
-                    console.log(err); 
-                });
+                .then(res => done())
+                .catch(err => done(err));
         });
-    */
+    });
 });
+
+
