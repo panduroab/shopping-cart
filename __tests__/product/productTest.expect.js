@@ -33,7 +33,7 @@ describe('API Product', function () {
         supertest(server).post('/api/product')
             .set('Accept', 'application/json')
             .send(productObj)
-            .expect('content-Type', /text/)
+            .expect('content-Type', /json/)
             .expect(200)
             .then(res => done())
             .catch(err => done(err));
