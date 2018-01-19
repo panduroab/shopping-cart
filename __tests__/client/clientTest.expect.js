@@ -53,9 +53,4 @@ describe('API Client',function(){
         })
         .catch(err => done(err));
     });
-<<<<<<< HEAD:__tests__/client/clientTest.expect.jss
-
 });
-=======
-});
->>>>>>> 846296114618bb4680300a053f45d7fa22d10f8e:__tests__/client/clientTest.expect.js
