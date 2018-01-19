@@ -36,7 +36,7 @@ module.exports = () => ({
     })
     },
 
-    deleteProdut: id => { new Promise ((resolve, reject) => {
+    deleteProdut: id => { new Promise((resolve, reject) => {
         productModel.find(id, (err,product) => {
             resolve(product);
             reject(err);

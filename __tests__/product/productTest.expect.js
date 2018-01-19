@@ -66,4 +66,16 @@ describe('API Product', function () {
     });
 });
 
+/*
+
+describe('CONTROLLER Product', function(){
+    it('should get all products', done => {
+        productController.getProducts().then(result => {
+            
+        })
+        done();
+    })
+})
+
+*/
 
