@@ -3,6 +3,8 @@ const chai = require('chai');
 const assert = require('assert').assert;
 const server = require('../../src/server')({ logger: false });
 
+const orderController = require('../../src/controllers/Order')();
+
 describe('API Order', function () {
     it('GET should fetch all orders', done => {
         supertest(server).get('/api/order')
@@ -14,13 +16,16 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
-        let id = '5a60ecd423ac9505ff84dd2e';
-        supertest(server).get(`${url}/${id}`)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .then(res => done())
-            .catch(err => done(err));
+        orderController.getRandomOrder().then(result => {
+            order = result;
+            let id = order._id;
+            supertest(server).get(`${url}/${id}`)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        });
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
@@ -40,23 +45,29 @@ describe('API Order', function () {
             "client_id": 1,
             "__v": 0
         };
-        let objId = '5a60ecc523ac9505ff84dd2';
-        supertest(server).put(`/api/order/${objId}`)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .send(orderObj)
-            .expect(200)
-            .then(res => done())
-            .catch(err => done(err));
+        orderController.getRandomOrder().then(result => {
+            order = result;
+            let id = order._id;
+            supertest(server).put(`/api/order/${id}`)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .send(orderObj)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        });
     });
     it('Should delete order /id', done => {
         let url = '/api/order';
-        let id = '5a60ecc523ac9505ff84dd2d';
-        supertest(server).delete(`${url}/${id}`)
-            // .set('Accept', 'application/json')
-            .expect('Content-Type', /text/)
-            .expect(200)
-            .then(res => done())
-            .catch(err => done(err));
+        orderController.getRandomOrder().then(result => {
+            let order = result;
+            let id = order._id;
+            supertest(server).delete(`${url}/${id}`)
+                // .set('Accept', 'application/json')
+                .expect('Content-Type', /text/)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        });
     });
 });
