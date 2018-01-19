@@ -6,6 +6,7 @@ const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes');
 const ClientRoutes = require('./routes/clientRoutes');
 const db = require('./db/db');
+const path = require('path');
 
 module.exports = config => {
     db({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' });
@@ -17,6 +18,10 @@ module.exports = config => {
     app.get('/', (req, res, next) => {
         res.send(`Shopping Cart API`);
     });
+
+    // app.use('/api', (req, res) => {
+    //     res.sendFile(path.join(__dirname + '/api.html'));
+    // });
 
     // routes
     app.use('/api/order', OrderRoutes);
