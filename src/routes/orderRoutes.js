@@ -35,7 +35,6 @@ router.put('/:id', (req, res) => {
         if (err) {
             res.status(500).send(err);
         } else if (doc) {
-            console.log('ppppppp',typeof(doc));
             doc.status = req.body.status || doc.status;
             doc.date = req.body.date || doc.date;
             doc.products = req.body.products || doc.products;
