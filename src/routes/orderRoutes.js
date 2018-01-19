@@ -56,7 +56,10 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     OrderModel.findByIdAndRemove(req.params.id, (err, order) => {
             if (err) res.status(500).send('Internal Server Error');
-            res.status(200).send('OK delete ' + req.params.id);
+            if(order)
+                res.status(200).send('OK delete ' + order);
+            else
+                res.status(404).send('NOT OK');
         }
     );
 });

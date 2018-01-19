@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const chai = require('chai');
+const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
 var id ='';
 describe('API Order', function () {
@@ -8,13 +9,8 @@ describe('API Order', function () {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                //console.log(res.body);
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
     it('Should get order /id', done => {
         let url = '/api/order';
@@ -23,17 +19,31 @@ describe('API Order', function () {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
         supertest(server).post('/api/order')
             .set('Accept', 'application/json')
+            .send(orderObj)
+            .expect('content-Type', /text/)
+            .expect(200)
+            .then(res => done())
+            .catch(err => done(err));
+    });
+    it('Should put an order', done => {
+        let orderObj = {
+            "status": "pending",
+            "date": "2018-01-18T18:51:49.207Z",
+            "products": [],
+            "client_id": 1,
+            "__v": 0
+        };
+        let objId = '5a60ecc523ac9505ff84dd2d';
+        supertest(server).put(`/api/order/${objId}`)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
             .send(orderObj)
             .expect(200)
             .then(res => done())
@@ -41,16 +51,12 @@ describe('API Order', function () {
     });
     it('Should delete order /id', done => {
         let url = '/api/order';
-        let id = '5a5f7aa660373a0c27edf708';
+        let id = '5a60ecc523ac9505ff84dd2d';
         supertest(server).delete(`${url}/${id}`)
             // .set('Accept', 'application/json')
             .expect('Content-Type', /text/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
 });

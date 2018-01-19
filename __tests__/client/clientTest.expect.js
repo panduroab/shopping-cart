@@ -28,33 +28,23 @@ describe('API Client',function(){
                 id=res.body._id;
                 done();
             })
-            .catch(err => {
-                done(err);
-            });
+            .catch(err => {done(err);});
     });
     it('Should get client /id', done => {
         supertest(server).get(`/api/client/${id}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => {done();})
+            .catch(err => {done(err);});
     });
     it('Should delete client /id', done => {
         supertest(server).delete(`/api/order/${id}`)
             // .set('Accept', 'application/json')
             .expect('Content-Type', /text/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => {done();})
+            .catch(err => {done(err);});
     });
 
 });
