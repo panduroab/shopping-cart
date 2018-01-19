@@ -1,7 +1,17 @@
 const supertest = require('supertest');
 const chai = require('chai');
-const server = require('../../src/server')({logger:false});
 const clientController = require('../../src/controllers/Client')();
+
+const config = {
+    logger: false,
+    dbConfig: {
+        domain: '127.0.0.1',
+        port: '27017',
+        dbName: 'shopping-cart'
+    }
+};
+
+const server = require('../../src/server')(config);
 
 describe('API Client',function(){
     it('POST should create an client', done => {
@@ -37,8 +47,13 @@ describe('API Client',function(){
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .then(res => {done();})
-                .catch(err => {done(err);});
+                .end((err, res) => {
+                    if(err)
+                        done(err);
+                    done();
+                });
+        }).catch(err => {
+            done(err);
         });
     });
     it('Should delete client /id', done => {
@@ -50,7 +65,8 @@ describe('API Client',function(){
                 .then(res => {done();})
                 .catch(err => {done(err);
                 });
-        })
-        .catch(err => done(err));
+        }).catch(err => {
+            done(err);
+        });
     });
 });
