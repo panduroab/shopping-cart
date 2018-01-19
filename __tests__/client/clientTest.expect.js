@@ -44,7 +44,8 @@ describe('API Client',function(){
             .expect('Content-Type', /text/)
             .expect(200)
             .then(res => {done();})
-            .catch(err => {done(err);});
+            .catch(err => {done(err);
+            });
     });
 
 });

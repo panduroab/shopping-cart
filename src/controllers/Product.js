@@ -1,18 +1,49 @@
 const productModel = require('../db/models/product');
 
 module.exports = () => ({
-    getProduct: id => {
-
+    getProduct: id => { new Promise((resolve, reject ) => {
+        productModel.findById(id, (err, doc) => {
+            resolve(doc);
+            reject(err);
+        })
+    })
     },
-    getProducts: () => {
 
+    getProducts: () => { new Promise((resolve,reject) => {
+        productModel.find({}, (err, docs) => {
+            resolve(docs);
+            reject(err);
+        })
+    })
     },
-    updateProduct: (id, body) => {
 
+    updateProduct: (id, body) => { new Promise((resolve, reject) => {
+        productModel.findById(id, (err,product) => {
+            if(err){
+                res.status(500).send(err);
+            } else {
+                product.name = body.name;
+                product.price = body.price;
+                product.description = body.description;
+                product.save( (err,product) => {
+                    if(err){ res.status(500).send(err);}
+                    res.status(200).send(err);
+                })
+            }
+            resolve(product);
+            reject(err);
+        })
+    })
     },
-    deleteProdut: id => {
 
+    deleteProdut: id => { new Promise ((resolve, reject) => {
+        productModel.find(id, (err,product) => {
+            resolve(product);
+            reject(err);
+        })
+    })
     },
+
     getRamProduct: () => new Promise((resolve, reject) => {
         productModel.find({}, (err, docs) => {
             let product = docs.splice(0, 1)[0];
