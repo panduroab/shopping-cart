@@ -35,14 +35,12 @@ router.put('/:id', (req, res) => {
         if (err) {
             res.status(500).send(err);
         } else if (doc) {
+            console.log('ppppppp',typeof(doc));
             doc.status = req.body.status || doc.status;
             doc.date = req.body.date || doc.date;
             doc.products = req.body.products || doc.products;
             doc.client_id = req.body.client_id || doc.client_id;
-            // doc.created_at = req.body.created_at || doc.created_at;
             doc.updated_at = Date.now();
-            // doc.deleted_at = req.body.deleted_at || doc.deleted_at;
-            // Update the document
             doc.save((err, doc) => {
                 if (err)
                     res.status(500).send(err);

@@ -16,7 +16,6 @@ describe('API Order', function () {
     });
     it('Should get order /id', done => {
         let url = '/api/order';
-        orderController.getOrder('5a6223572aefba0b51a289e8').then(result=>{console.log(result)});
         orderController.getRandomOrder().then(result => {
             order = result;
             let id = order._id;
@@ -72,3 +71,16 @@ describe('API Order', function () {
         });
     });
 });
+
+// describe('CONTROLLER Order', () => {
+//     let url = '/api/order';
+//     it('Should get order /id', done => {
+//         supertest(server).get(`${url}/${id}`)
+//         .set('Accept', 'application/json')
+//         .expect('Content-Type', /json/)
+//         .expect(200)
+//         .then(res => done())
+//         .catch(err => done(err));
+//         done();
+//     });
+// });
