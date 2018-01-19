@@ -29,14 +29,23 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    ProductModel.findById(req.params.id, (err, prod) => {
-        if (err)
+    let id = req.params.id,
+        body = req.body;
+    ProductModel.findById(id, (err, prod) => {
+        if (err){
             res.status(404).send(err)
-        if (req.body.name) prod.name = req.body.name;
-        if (req.body.price) prod.price = req.body.price;
-        if (req.body.description) prod.description = req.body.description;
-        prod.save((err, prod) => { if (err) res.status(404).send(err); });
-        res.status(200).send("Product updated succesfully");
+        } else if (prod){
+            prod.name = req.body.name || prod.name;
+            prod.price = req.body.price || prod.price;
+            prod.description = req.body.description || prod.description;
+            prod.save((err, prod) => {
+                if (err)
+                    res.status(500).send(err);
+                res.status(200).send(prod);
+            });
+        } else {
+            res.status(404).send(err);
+        }
     });
 });
 

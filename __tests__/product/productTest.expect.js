@@ -45,7 +45,7 @@ describe('API Product', function () {
             let id = product._id;
             supertest(server).put(`/api/product/${id}`)
                 .set('Accept', 'application/json')
-                .expect('Content-Type', /text/)
+                .expect('Content-Type', /json/)
                 .send(productObj)
                 .expect(200)
                 .then(res => done())
