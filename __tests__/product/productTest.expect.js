@@ -20,7 +20,6 @@ describe('API Product', function () {
         productController.getRamProduct().then(result => {
             product = result;
             let id = product._id;
-
             supertest(server).get(`${url}/${id}`)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -44,7 +43,6 @@ describe('API Product', function () {
         productController.getRamProduct().then(result => {
             product = result;
             let id = product._id;
-
             supertest(server).put(`/api/product/${id}`)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /text/)
@@ -60,7 +58,6 @@ describe('API Product', function () {
             let product = result;
             let id = product._id;
             supertest(server).delete(`${url}/${id}`)
-                // .set('Accept', 'application/json')
                 .expect('Content-Type', /text/)
                 .expect(200)
                 .then(res => done())

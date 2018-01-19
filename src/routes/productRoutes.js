@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
         description: req.body.description
     }, (err, order)=>{
         if(err) res.status(500).send('Internal Server Error');
-        res.status(200).send("Client Registered");
+        res.status(200).send("Product added");
     });
 });
 
