@@ -3,7 +3,7 @@ const chai = require('chai');
 const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
 
-const productController = require('../../src/controllers/Product')();
+const productController = require('../../src/controllers/product')();
 
 describe('API Product', function () {
     it('GET should fetch all products', done => {

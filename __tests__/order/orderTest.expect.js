@@ -2,8 +2,10 @@ const supertest = require('supertest');
 const chai = require('chai');
 const assert = require('assert');
 const server = require('../../src/server')({ logger: false });
+const model = require('../../src/db/models/order.js');
+const Schema = model.prototype.Schema;
 
-const orderController = require('../../src/controllers/Order')();
+const orderController = require('../../src/controllers/order')();
 
 describe('API Order', function () {
     it('GET should fetch all orders', done => {
@@ -25,7 +27,7 @@ describe('API Order', function () {
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .then(res => done())
+                .then(res => {done()})
                 .catch(err => done(err));
         });
     });
