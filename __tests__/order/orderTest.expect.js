@@ -47,14 +47,17 @@ describe('API Order', function () {
             "client_id": 1,
             "__v": 0
         };
-        let objId = '5a60ecc523ac9505ff84dd2d';
-        supertest(server).put(`/api/order/${objId}`)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .send(orderObj)
-            .expect(200)
-            .then(res => done())
-            .catch(err => done(err));
+        orderController.getRandomOrder().then(result => {
+            order = result;
+            let id = order._id;
+            supertest(server).put(`/api/order/${objId}`)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .send(orderObj)
+                .expect(200)
+                .then(res => done())
+                .catch(err => done(err));
+        })
     });
     it('Should delete order /id', done => {
         let url = '/api/order';
