@@ -1,7 +1,7 @@
 const supertest = require('supertest');
 const chai = require('chai');
 const assert = require('assert');
-const productController = require('../../src/controllers/Product')();
+const productController = require('../../src/controllers/product')();
 
 const config = {
     logger: 'dev',

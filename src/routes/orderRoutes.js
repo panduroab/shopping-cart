@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
     if (typeof (req.body.status) === 'string' &&
-        typeof (req.body.date) === 'string' && // verificar formato de fecha
+        Array.isArray(req.body.products) && 
         typeof (req.body.client_id) === 'number') {
         let id = req.params.id,
             body = req.body;

@@ -23,7 +23,7 @@ module.exports = () => ({
     })
     },
     updateOrder: (id, body) => {new Promise((resolve,reject)=>{
-        OrderModel.findById(id, (err, doc) => {
+        orderModel.findById(id, (err, doc) => {
             if (err) {
                 res.status(500).send(err);
             } else {
