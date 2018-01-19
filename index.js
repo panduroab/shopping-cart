@@ -1,4 +1,4 @@
-const app = require('./src/server')({logger : false});
+const app = require('./src/server')({logger : 'dev'});
 const db = require('./src/db/db');
 const port = 3000;
 
@@ -8,8 +8,7 @@ db({
     dbName: 'shopping-cart'
 }).then(res => {
     console.log('Connected to MongoDB successfuly!!');
-})
-.catch(err => {
+}).catch(err => {
     console.log(err);
 });
 
