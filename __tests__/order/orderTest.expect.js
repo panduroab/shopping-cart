@@ -9,13 +9,8 @@ describe('API Order', function () {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                //console.log(res.body);
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
     it('Should get order /id', done => {
         let url = '/api/order';
@@ -24,12 +19,8 @@ describe('API Order', function () {
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
-            .then(res => {
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
     it('POST should create an order', done => {
         let orderObj = { status: 'pending', products: [], client_id: 1 };
@@ -46,14 +37,11 @@ describe('API Order', function () {
             "status": "pending",
             "date": "2018-01-18T18:51:49.207Z",
             "products": [],
-            "created_at": "2018-01-18T18:51:49.207Z",
-            "updated_at": "2018-01-18T18:51:49.207Z",
-            "deleted_at": "2018-01-18T18:51:49.207Z",
-            "_id": "5a60ecc523ac9505ff84dd2d",
             "client_id": 1,
             "__v": 0
         };
-        supertest(server).put(`/api/order/${orderObj._id}`)
+        let objId = '5a60ecc523ac9505ff84dd2d';
+        supertest(server).put(`/api/order/${objId}`)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .send(orderObj)
@@ -63,17 +51,12 @@ describe('API Order', function () {
     });
     it('Should delete order /id', done => {
         let url = '/api/order';
-        let id = '5a5f7aa660373a0c27edf708';
+        let id = '5a60ecc523ac9505ff84dd2d';
         supertest(server).delete(`${url}/${id}`)
             // .set('Accept', 'application/json')
             .expect('Content-Type', /text/)
             .expect(200)
-            .then(res => {
-                // console.log(res);
-                done();
-            })
-            .catch(err => {
-                done(err);
-            });
+            .then(res => done())
+            .catch(err => done(err));
     });
 });
