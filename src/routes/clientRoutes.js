@@ -14,7 +14,7 @@ router.get('/',(req,res)=>{
 });
 
 //Get by ID
-router.get('/:id',(res,req)=>{
+router.get('/:id',(req,res)=>{
     //Get a client by his ID
     ClientModel.findById(req.params.id, (err, doc) => {
         if (err)
@@ -39,7 +39,14 @@ router.post('/',(req,res)=>{
 
 //Delete
 router.delete('/:id',(req, res)=>{
-    res.status(200);
+    ClientModel.findByIdAndRemove(req.params.id, (err, client) => {
+        if(err)
+            res.status(500).send('Internal Server Error');
+        if(client)
+            res.status(200).send('OK delete ' + client);
+        else
+            res.status(201).send('NOT OK');
+    });
 });
 
 module.exports = router;

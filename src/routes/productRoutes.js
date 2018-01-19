@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
         description: req.body.description
     }, (err, order)=>{
         if(err) res.status(500).send('Internal Server Error');
-        res.status(200).send("Client Registered");
+        res.status(200).send("Product added");
     });
 });
 
@@ -41,10 +41,12 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    ProductModel.findByIdAndRemove(req.params.id, err => {
-        if (err)
-            res.status(404).send(err);
-        res.status(200).send('Product deleted succesfully');
+    ProductModel.findByIdAndRemove(req.params.id, (err, product) => {
+        if (err){ res.status(500).send('Internal Server Error'); }
+        if (product){
+            res.status(200).send('Product deleted succesfully');
+        } else { res.status(404).send('not ok');}
+        
     });
 });
 
