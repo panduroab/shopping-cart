@@ -50,7 +50,7 @@ describe('API Order', function () {
             let id = order._id;
             supertest(server).put(`/api/order/${id}`)
                 .set('Accept', 'application/json')
-                .expect('Content-Type', /text/)
+                .expect('Content-Type', /json/)
                 .send(orderObj)
                 .expect(200)
                 .then(res => done())

@@ -29,12 +29,12 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    if (typeof (req.body.status) === 'string' &&
-        typeof (req.body.date) === 'string' && // verificar formato de fecha
-        typeof (req.body.created_at) === 'string' &&
-        typeof (req.body.updated_at) === 'string' &&
-        typeof (req.body.deleted_at) === 'string' &&
-        typeof (req.body.client_id) === 'number') {
+    // if (typeof (req.body.status) === 'string' &&
+    //     typeof (req.body.date) === 'string' && // verificar formato de fecha
+    //     typeof (req.body.created_at) === 'string' &&
+    //     typeof (req.body.updated_at) === 'string' &&
+    //     typeof (req.body.deleted_at) === 'string' &&
+    //     typeof (req.body.client_id) === 'number') {
         let id = req.params.id,
             body = req.body;
         OrderModel.findById(id, (err, doc) => {
@@ -55,9 +55,9 @@ router.put('/:id', (req, res) => {
                 res.status(404).send(err);
             }
         });
-    } else {
-        res.status(400).send('Bad request');
-    }
+    // } else {
+    //     res.status(400).send('Bad request');
+    // }
 });
 
 router.delete('/:id', (req, res) => {
