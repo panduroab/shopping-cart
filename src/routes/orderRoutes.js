@@ -19,11 +19,11 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     OrderModel.create({
         status: req.body.status,
-        date: req.body.date,
         products: req.body.products,
         client_id: req.body.client_id
     }, (err, order) => {
-        if (err) res.status(500).send('Internal Server Error');
+        if (err)
+            res.status(500).send('Internal Server Error');
         res.status(200).send('OK');
     });
 });
