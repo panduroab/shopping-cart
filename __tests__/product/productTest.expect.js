@@ -24,6 +24,18 @@ describe('CONTROLLER Product', function(){
     let product = {};
     productController.getRamProduct().then(result => product = result).catch();
 
+    it('should post a product', done => {
+        let productObj = { name: 'test', price: 2, description: 'test description'};
+        productController.postProduct(productObj).then(product => {
+            product.should.to.have.property('name');
+            product.name.should.to.not.equal(null);
+            product.should.to.have.property('price');
+            product.price.should.to.not.equal(null);
+            product.should.to.have.property('description');
+            product.description.should.to.not.equal(null);
+            done();
+        }).catch(err => done(err));
+    });
     it('should get all', done => {
         productController.getAllProducts().then(result => {
             result.forEach((product) => {
@@ -46,6 +58,26 @@ describe('CONTROLLER Product', function(){
             product.price.should.to.not.equal(null);
             product.should.to.have.property('description');
             product.description.should.to.not.equal(null);
+            done();
+        }).catch(err => done(err));
+    });
+    it('should update a product', done => {
+        let productObj = { name: 'test', price: 2, description: 'test description'};
+        let id = product._id;
+        productController.updateProduct(id, productObj).then(product => {
+            product.should.to.have.property('name');
+            product.name.should.to.not.equal(null);
+            product.should.to.have.property('price');
+            product.price.should.to.not.equal(null);
+            product.should.to.have.property('description');
+            product.description.should.to.not.equal(null);
+            done();
+        }).catch(err => done(err));
+    });
+    it('should delete a product', done => {
+        let id = product._id;
+        productController.deleteProdut(id).then(result => {
+            result.should.be.a('string');
             done();
         }).catch(err => done(err));
     });
