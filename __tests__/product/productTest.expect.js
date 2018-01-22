@@ -171,5 +171,17 @@ describe('Types Product', function(){
     });
 });
 
+describe('CONTROLLER Product', function(){
+    it('should get all', done => {
+        productController.getAllProducts().then(result => {
+            result.forEach((product) => {
+                product.should.to.have.property('name');
+                product.name.should.to.not.equal(null);
+            })
+            done();
+        }).catch(err => done(err));
+    });
+});
+
 
 
