@@ -184,6 +184,7 @@ describe('Types Order',function(){
                 order = result;
                 let id = order._id;
                 supertest(server).put(`/api/order/${id}`)
+                .send(order)
                 .expect(200)
                 .end(function(err,res){
                     expect(res.body).to.have.property('status');
@@ -204,5 +205,37 @@ describe('Types Order',function(){
                 });
             }).catch(err=>{done(err)});
         });
+    });
+});
+describe('Controller Order',function(){
+    it('Get a order',function(){
+        orderController.getRandomOrder().then(order=>{
+            let id = order._id;
+            orderController.getOrder(id).then(res=>{
+                res.should.equal(order);
+                done();
+            }).catch(err=>done(err))
+        })
+    })
+    it('Get fetch all order',function(){   
+        orderController.getAllOrders().then(order=>{
+            order.forEach(element=>{
+                element.should.to.have.property('status');
+                element.status.should.to.not.equal(null);
+                element.should.to.have.property('date');
+                element.date.should.to.not.equal(null);
+                element.should.to.have.property('products');
+                element.products.should.to.not.equal(null);
+                element.should.to.have.property('client_id');
+                element.client_id.should.to.not.equal(null);
+                element.should.to.have.property('created_at');
+                element.created_at.should.to.not.equal(null);
+                element.should.to.have.property('updated_at');
+                element.updated_at.should.to.not.equal(null);
+                element.should.to.have.property('deleted_at');
+                element.deleted_at.should.to.not.equal(null);
+            })
+            done();
+        }).catch(err=>done(err));
     });
 });
