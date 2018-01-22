@@ -19,12 +19,21 @@ describe('ClientController', () => {
     let client = {};
     clientController.getRandomClient().then(result => client = result).catch();
 
+    it('Should create a client', done => {
+        let clientObj = {
+            name:       'name',
+            lastnamefa: 'lastnamefa',
+            lastnamemo: 'lastnamemo',
+            birthdate:  '1985-01-23',
+            address:    'address #281'
+        };
+        clientController.postClient(clientObj)
+        .then(clients => done())
+        .catch(err => done(err));
+    });
     it('Should fetch all clients', done => {
         clientController.getAllClients()
-        .then(clients => done()).catch(err => {
-
-            done(err);
-        });
+        .then(clients => done()).catch(err => done(err));
     });
     it('Should fetch a client', done => {
         let id = client._id;
