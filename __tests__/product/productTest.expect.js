@@ -1,7 +1,10 @@
 const supertest = require('supertest');
 const chai = require('chai');
-const assert = require('assert');
+const assert = require('assert').assert;
 const productController = require('../../src/controllers/Product')();
+
+const expect = require('chai').expect;
+const should = require('chai').should();
 
 const config = {
     logger: 'dev',
@@ -81,16 +84,25 @@ describe('API Product', function () {
     });
 });
 
-/*
+
 
 describe('CONTROLLER Product', function(){
     it('should get all products', done => {
-        productController.getProducts().then(result => {
-            
-        })
-        done();
+        supertest(server).get('/api/product')
+        .expect(200)
+        .end( (err, res) => {
+            //console.log(res.body);
+            res.body.forEach((product, index) => {
+                expect(product).to.have.property('name');
+                expect(product.name).to.not.equal(null);
+                expect(product).to.have.property('price');
+                expect(product.price).to.not.equal(null);
+                expect(product).to.have.property('description');
+                expect(product.description).to.not.equal(null);
+            });
+        });
     })
-})
+});
 
-*/
+
 
