@@ -16,9 +16,6 @@ const config = {
 const server = require('../../src/server')(config);
 
 describe('ClientController', () => {
-    let client = {};
-    clientController.getRandomClient().then(result => client = result).catch();
-
     it('Should create a client', done => {
         let clientObj = {
             name:       'name',
@@ -36,25 +33,29 @@ describe('ClientController', () => {
         .then(clients => done()).catch(err => done(err));
     });
     it('Should fetch a client', done => {
-        let id = client._id;
-        clientController.getClient(id)
-        .then(client => {
-            client.should.to.have.property('name');
-            client.name.should.to.not.equal(null);
-            done();
-        }).catch(err => {
-            done(err);
-        });
+        clientController.getRandomClient().then(client => {
+            let id = client._id;
+            clientController.getClient(id)
+            .then(client => {
+                client.should.to.have.property('name');
+                client.name.should.to.not.equal(null);
+                done();
+            }).catch(err => {
+                done(err);
+            });
+        }).catch();
     });
     it('Should delete a client', done => {
-        let id = client._id;
-        clientController.deleteClient(id)
-        .then(result => {
-            result.should.be.a('string');
-            done();
-        }).catch(err => {
-            done(err);
-        });
+        clientController.getRandomClient().then(client => {
+            let id = client._id;
+            clientController.deleteClient(id)
+            .then(result => {
+                result.should.be.a('string');
+                done();
+            }).catch(err => {
+                done(err);
+            });
+        }).catch();
     });
 });
 
