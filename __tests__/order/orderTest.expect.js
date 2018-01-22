@@ -7,7 +7,7 @@ const orderController = require('../../src/controllers/Order')();
 const orderObj = { status: 'pending', products: [], client_id: 1 };
 
 const config = {
-    logger: 'dev',
+    logger: false,
     dbConfig: {
         domain: '127.0.0.1',
         port: '27017',

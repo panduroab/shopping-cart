@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test": "mocha __tests__/**/*.js --exit"
+    "test": "mocha __tests__/**/*.js --exit",
+    "test-client": "mocha __tests__/client/*.js --exit",
+    "nodemon": "nodemon index.js"
   },
   "author": "@panduroab",
   "license": "ISC",

@@ -2,26 +2,25 @@ const ClientModel = require('../db/models/client');
 
 module.exports = () => ({
     getClient: id => new Promise((resolve, reject) => {
-        let query = { _id: id };
-        ClientModel.find(query).exec((err, docs) => {
-            if(err)
-                reject(err);
-            resolve(docs);
-        });
-    }),
-    getAllClients: () => new Promise((resolve, reject) => {
-        ClientModel.findById({}, (err, doc) => {
+        ClientModel.findById(id, (err, doc) => {
             if(err)
                 reject(err);
             resolve(doc);
         });
     }),
+    getAllClients: () => new Promise((resolve, reject) => {
+        ClientModel.find({}, (err, docs) => {
+            if(err)
+                reject(err);
+            resolve(docs);
+        });
+    }),
     deleteClient: id => new Promise((resolve, reject) => {
-        OrderModel.findByIdAndRemove(id, (err, client) => {
+        ClientModel.findByIdAndRemove(id, (err, client) => {
             if(err)
                 reject(err);
             if(client)
-                return resolve('OK delete');
+                resolve('OK delete');
             resolve('NOT OK');
         });
     }),
@@ -40,15 +39,15 @@ module.exports = () => ({
         });
     }),
     updateClient: (id, body) => new Promise((resolve, reject) => {
-        OrderModel.findById(id, (err, order) => {
+        ClientModel.findById(id, (err, client) => {
             if(err)
                 reject(err);
-            order.status = body.status || order.status;
-            order.date = body.date || order.date;
-            order.products = body.products || order.products;
-            order.client_id = body.client_id || order.client_id;
-            order.updated_at = Date.now();
-            order.save((err, doc) => {
+            client.status = body.status || client.status;
+            client.date = body.date || client.date;
+            client.products = body.products || client.products;
+            client.client_id = body.client_id || client.client_id;
+            client.updated_at = Date.now();
+            client.save((err, doc) => {
                 if(err)
                     reject(err);
                 resolve(doc);
