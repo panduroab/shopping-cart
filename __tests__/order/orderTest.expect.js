@@ -129,7 +129,7 @@ describe('Types Order',function(){
                 expect(res.body.deleted_at).to.not.equal(null);
                 done();
             });
-        });
+        }).catch(err=>{done(err)});
     });
     it('Check that the element post have the correct type',done=>{
         supertest(server).post('/api/order')
@@ -178,7 +178,7 @@ describe('Types Order',function(){
                 expect(res.body.deleted_at).to.not.equal(null);
                 done();
             });
-        });
+        }).catch(err=>{done(err)});
         it('Should check the type of the update order', done => {
             orderController.getRandomOrder().then(result => {
                 order = result;
@@ -202,7 +202,7 @@ describe('Types Order',function(){
                     expect(res.body.deleted_at).to.not.equal(null);
                     done();
                 });
-            });
+            }).catch(err=>{done(err)});
         });
     });
 });
