@@ -20,6 +20,37 @@ const server = require('../../src/server')(config);
 
 const productObj = { name: 'test', price: 1, description: 'test description' };
 
+describe('CONTROLLER Product', function(){
+    let product = {};
+    productController.getRamProduct().then(result => product = result).catch();
+
+    it('should get all', done => {
+        productController.getAllProducts().then(result => {
+            result.forEach((product) => {
+                product.should.to.have.property('name');
+                product.name.should.to.not.equal(null);
+                product.should.to.have.property('price');
+                product.price.should.to.not.equal(null);
+                product.should.to.have.property('description');
+                product.description.should.to.not.equal(null);
+            })
+            done();
+        }).catch(err => done(err));
+    });
+    it('should get a product', done => {
+        let id = product._id;
+        productController.getProduct(id).then(product => {
+            product.should.to.have.property('name');
+            product.name.should.to.not.equal(null);
+            product.should.to.have.property('price');
+            product.price.should.to.not.equal(null);
+            product.should.to.have.property('description');
+            product.description.should.to.not.equal(null);
+            done();
+        }).catch(err => done(err));
+    });
+});
+
 describe('API Product', function () {
     it('GET should fetch all products', done => {
         supertest(server).get('/api/product')
@@ -170,18 +201,3 @@ describe('Types Product', function(){
         }).catch(err => done(err));
     });
 });
-
-describe('CONTROLLER Product', function(){
-    it('should get all', done => {
-        productController.getAllProducts().then(result => {
-            result.forEach((product) => {
-                product.should.to.have.property('name');
-                product.name.should.to.not.equal(null);
-            })
-            done();
-        }).catch(err => done(err));
-    });
-});
-
-
-
