@@ -8,7 +8,7 @@ const expect = require('chai').expect;
 const should = require('chai').should();
 
 const config = {
-    logger: 'dev',
+    logger: false,
     dbConfig: {
         domain: '127.0.0.1',
         port: '27017',

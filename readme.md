@@ -1,27 +1,33 @@
-SHOPPING-CAR
+# SHOPPING-CAR
 
-Getting Started
+## Getting Started
+After installing the project and start mongod you can use
+the helper homepage at:
+[API helper Homepage](http://localhost:3000/api)
 
-Prerequisites
+## Prerequisites
+Project have dependencies that require:
+    - node v8.9.4
+    - mongo v3.6.1
+    - npm 5.6.0
 
-* Project have dependencies that require:
-node v8.9.4, mongo v3.6.1, together with NPM 5.6.0
+Project require running mongod
 
-Installing
+## Installing
+```sh
+$ npm install
+```
 
-* npm install
+## Running the tests
+```sh
+$ npm run test
+```
 
-Running the tests
+## Authors
+- GerardoGuti
+- JFrankLL
+- MarioGutierrezM
+- ssmarin
 
-* Project require running mongod
-* npm test
-
-Authors
-
-* GerardoGuti
-* JFrankLL
-* MarioGutierrezM
-* ssmarin
-
-License
+## License
 * MIT
