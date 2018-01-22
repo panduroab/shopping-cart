@@ -25,14 +25,14 @@ module.exports = config => {
         res.send(`Shopping Cart API`);
     });
 
-    // app.use('/api', (req, res) => {
-    //     res.sendFile(path.join(__dirname + '/api.html'));
-    // });
-
     // routes
     app.use('/api/order', OrderRoutes);
     app.use('/api/product', ProductRoutes);
     app.use('/api/client', ClientRoutes);
+
+    app.use('/api', (req, res) => {
+        res.sendFile(path.join(__dirname + '/api.html'));
+    });
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {

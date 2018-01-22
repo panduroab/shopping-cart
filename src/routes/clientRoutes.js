@@ -17,13 +17,14 @@ router.get('/',(req,res)=>{
 router.get('/:id',(req,res)=>{
     //Get a client by his ID
     ClientModel.findById(req.params.id, (err, doc) => {
-        if (err)
-            res.status(404).send(err);
-        res.status(200).send(doc);
+        if(err) res.status(500).send(err);
+        if(!doc) res.status(404).send('Client not found');
+        res.send(doc);
     });
 });
 
 //Post
+// falta validar que los datos no lleguen vacios
 router.post('/',(req,res)=>{
     ClientModel.create({
         name        : req.body.name,
@@ -33,7 +34,7 @@ router.post('/',(req,res)=>{
         address     : req.body.address
     },(err, order)=>{
         if(err) res.status(500).send('Internal Server Error');
-        res.status(200).send('Client registered');
+        res.status(200).send(order);
     });
 });
 
@@ -43,9 +44,9 @@ router.delete('/:id',(req, res)=>{
         if(err)
             res.status(500).send('Internal Server Error');
         if(client)
-            res.status(200).send('OK delete ' + client);
+            res.status(200).send(client);
         else
-            res.status(201).send('NOT OK');
+            res.status(404).send('Client not found');
     });
 });
 
