@@ -32,8 +32,8 @@ describe('ClientController', () => {
         clientController.getAllClients()
         .then(clients => done()).catch(err => done(err));
     });
-    clientController.getRandomClient().then(client => {
-        it('Should fetch a client', done => {
+    it('Should fetch a client', done => {
+        clientController.getRandomClient().then(client => {
             let id = client._id;
             clientController.getClient(id)
             .then(client => {
@@ -43,10 +43,10 @@ describe('ClientController', () => {
             }).catch(err => {
                 done(err);
             });
-        });
-    }).catch();
-    clientController.getRandomClient().then(client => {
-        it('Should delete a client', done => {
+        }).catch();
+    });
+    it('Should delete a client', done => {
+        clientController.getRandomClient().then(client => {
             let id = client._id;
             clientController.deleteClient(id)
             .then(result => {
@@ -55,8 +55,8 @@ describe('ClientController', () => {
             }).catch(err => {
                 done(err);
             });
-        });
-    }).catch();
+        }).catch();
+    });
 });
 
 describe('API Client',function(){
