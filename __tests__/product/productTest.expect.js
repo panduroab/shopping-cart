@@ -4,7 +4,7 @@ const assert = require('assert');
 const productController = require('../../src/controllers/product')();
 
 const config = {
-    logger: 'dev',
+    logger: false,
     dbConfig: {
         domain: '127.0.0.1',
         port: '27017',
