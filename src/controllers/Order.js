@@ -1,28 +1,29 @@
+
 const orderModel = require('../db/models/order');
 
 module.exports = () => ({
-    getOrder: id => {new Promise((resolve,reject)=>{
+    getOrder: id => { return new Promise((resolve,reject)=>{
         orderModel.findById(id,(err,doc)=>{
-            resolve(doc);
-            reject(err);
+            if(err) { reject(err)};
+            resolve(doc);  
         })
     })
     },
-    getAllOrders: () => {new Promise((resolve,reject)=>{
+    getAllOrders: () => {return new Promise((resolve,reject)=>{
         orderModel.find({},(err,docs)=>{
+            if(err) {reject(err)};
             resolve(order);
-            reject(err);
         })
     })
     },
-    deleteOrder: id => {new Promise((resolve,reject)=>{
+    deleteOrder: id => {return new Promise((resolve,reject)=>{
         orderModel.findByIdAndRemove(id,(err,order)=>{
+            if(err) {reject(err)};
             resolve(order);
-            reject(err);
         })
     })
     },
-    updateOrder: (id, body) => {new Promise((resolve,reject)=>{
+    updateOrder: (id, body) => {return new Promise((resolve,reject)=>{
         orderModel.findById(id, (err, doc) => {
             if (err) {
                 res.status(500).send(err);
@@ -41,6 +42,22 @@ module.exports = () => ({
         });
     }) 
     },
+    postOrder: (order) => new Promise((resolve,reject)=>{
+        if( typeof(order.status)     == 'String'&&
+            typeof(order.date)       == 'Date'  &&
+            Array.isArray(products)             &&
+            typeof(order.client_id ) =='String' &&
+            typeof(order.created_at) =='Date'   &&
+            typeof(order.updateOrder)=='Date'   &&
+            typeof(order.deleted_at) =='Date'){
+        orderModel.create(order,(err, order)=>{
+            if(err){reject(err)}
+            resolve(order);
+        })}
+        else{
+            reject(err, 'No compatible types')
+        }
+    }),
     
     getRandomOrder: () => new Promise((resolve, reject) => {
         orderModel.find({}, (err, docs) => {

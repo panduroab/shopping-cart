@@ -6,7 +6,7 @@ var OrderSchema = new Schema({
     status:     { type: String, default: 'pending' },
     date:       { type: Date, default: Date.now },
     products:   { type: Array },
-    client_id:  { type: Number },
+    client_id:  { type: String },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date, default: Date.now }
