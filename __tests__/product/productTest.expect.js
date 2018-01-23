@@ -3,20 +3,10 @@ const chai = require('chai');
 const assert = require('assert').assert;
 //const assert = require('assert');
 const productController = require('../../src/controllers/Product')();
-
 const expect = require('chai').expect;
 const should = require('chai').should();
-
-const config = {
-    logger: false,
-    dbConfig: {
-        domain: '127.0.0.1',
-        port: '27017',
-        dbName: 'shopping-cart'
-    }
-};
-
-const server = require('../../src/server')(config);
+const server = require('../../src/server')({ logger: false });
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {}).catch(err => {});
 
 const productObj = { name: 'test', price: 1, description: 'test description' };
 

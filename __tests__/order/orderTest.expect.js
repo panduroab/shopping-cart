@@ -4,18 +4,10 @@ const should = require('chai').should();
 const expect = require('chai').expect;
 const assert = require('assert').assert;
 const orderController = require('../../src/controllers/Order')();
+const server = require('../../src/server')({ logger: false });
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {}).catch(err => {});
+
 const orderObj = { status: 'pending', products: [], client_id: 1 };
-
-const config = {
-    logger: false,
-    dbConfig: {
-        domain: '127.0.0.1',
-        port: '27017',
-        dbName: 'shopping-cart'
-    }
-};
-
-const server = require('../../src/server')(config);
 
 describe('API Order', function () {
     it('GET should fetch all orders', done => {
@@ -184,6 +176,7 @@ describe('Types Order',function(){
                 order = result;
                 let id = order._id;
                 supertest(server).put(`/api/order/${id}`)
+                .send(order)
                 .expect(200)
                 .end(function(err,res){
                     expect(res.body).to.have.property('status');
@@ -205,4 +198,60 @@ describe('Types Order',function(){
             }).catch(err=>{done(err)});
         });
     });
+});
+describe('Controller Order',function(){
+    it('Get a order',function(){
+        orderController.getRandomOrder().then(order=>{
+            let id = order._id;
+            orderController.getOrder(id).then(res=>{
+                res.should.equal(order);
+                done();
+            }).catch(err=>done(err))
+        });
+    });
+    it('Delete a order',function(){
+        orderController.getRandomOrder().then(order=>{
+            let id = order._id;
+            orderController.deleteOrder(id).then(res=>{
+                res.should.be.a('string');
+                done();
+            }).catch(err=>done(err))
+        });
+    });
+    it('Post a order',function(){
+        orderController.postOrder(orderObj).then(order=>{
+            order.should.equal(orderObj);
+            done();
+        }).catch(err=>done(err));
+    });
+    it('Get fetch all order',function(){   
+        orderController.getAllOrders().then(order=>{
+            if(!order){
+                order[0].should.to.have.property('status');
+                order[0].status.should.to.not.equal(null);
+                order[0].should.to.have.property('date');
+                order[0].date.should.to.not.equal(null);
+                order[0].should.to.have.property('products');
+                order[0].products.should.to.not.equal(null);
+                order[0].should.to.have.property('client_id');
+                order[0].client_id.should.to.not.equal(null);
+                order[0].should.to.have.property('created_at');
+                order[0].created_at.should.to.not.equal(null);
+                order[0].should.to.have.property('updated_at');
+                order[0].updated_at.should.to.not.equal(null);
+                order[0].should.to.have.property('deleted_at');
+                order[0].deleted_at.should.to.not.equal(null); 
+            }
+            done();
+        }).catch(err=>done(err));
+    });
+    it('Update a order',function(){
+        orderController.getRandomOrder().then(order=>{
+            let id = order._id;
+            orderController.updateOrder(id,orderObj).then(res=>{
+                res.should.equal(orderObj);
+                done();
+            }).catch(err=>done(err))
+        })
+    })
 });
