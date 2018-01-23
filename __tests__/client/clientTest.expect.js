@@ -112,6 +112,34 @@ describe('API Client', function () {
 });
 
 describe('Types client', () => {
+    it('Check the element post have the correct type', done => {
+        const clientObj = {
+            "name": "Samuel",
+            "lastnamefa": "Marin",
+            "lastnamemo": "Escobedo",
+            "birthdate": new Date(),
+            "address": "Mi casa"
+        };
+        supertest(server).post('/api/client/')
+            .set('Accept', 'application/json')
+            .send(clientObj)
+            .expect(200)
+            .end((err, res) => {
+                expect(res.body).to.have.property('_id');
+                expect(res.body._id).to.not.equal(null);
+                expect(res.body).to.have.property('name');
+                expect(res.body.name).to.not.equal(null);
+                expect(res.body).to.have.property('lastnamefa');
+                expect(res.body.lastnamefa).to.not.equal(null);
+                expect(res.body).to.have.property('lastnamemo');
+                expect(res.body.lastnamemo).to.not.equal(null);
+                expect(res.body).to.have.property('birthdate');
+                expect(res.body.birthdate).to.not.equal(null);
+                expect(res.body).to.have.property('address');
+                expect(res.body.address).to.not.equal(null);
+                done();
+            });
+    });
     it('GET the type of all the clients', done => {
         supertest(server).get('/api/client')
             .expect(200)
@@ -154,35 +182,7 @@ describe('Types client', () => {
                 });
         }).catch(err => done(err));
     });
-    it('Check the element post have the correct type', done => {
-        const clientObj = {
-            "name": "Samuel",
-            "lastnamefa": "Marin",
-            "lastnamemo": "Escobedo",
-            "birthdate": new Date(),
-            "address": "Mi casa"
-        };
-        supertest(server).post('/api/client/')
-            .set('Accept', 'application/json')
-            .send(clientObj)
-            .expect(200)
-            .end((err, res) => {
-                expect(res.body).to.have.property('_id');
-                expect(res.body._id).to.not.equal(null);
-                expect(res.body).to.have.property('name');
-                expect(res.body.name).to.not.equal(null);
-                expect(res.body).to.have.property('lastnamefa');
-                expect(res.body.lastnamefa).to.not.equal(null);
-                expect(res.body).to.have.property('lastnamemo');
-                expect(res.body.lastnamemo).to.not.equal(null);
-                expect(res.body).to.have.property('birthdate');
-                expect(res.body.birthdate).to.not.equal(null);
-                expect(res.body).to.have.property('address');
-                expect(res.body.address).to.not.equal(null);
-                done();
-            });
-    });
-    it('Check the element deleted have the correct type', done => {
+    it('Check the deleted element have the correct type', done => {
         clientController.getRandomClient().then(result => {
             supertest(server).delete(`/api/order/${result._id}`)
                 .expect(200)
