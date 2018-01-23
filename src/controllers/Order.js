@@ -68,18 +68,26 @@ module.exports = () => ({
             resolve(order);
         });
     }),
-    getProductsof: (id) => new Promise((resolve,reject)=>{
-        let products = [];
-        orderModel.findById(id, (err,order)=>{
-            order.products.forEach((product_id,index) => {
-                productController.getProduct(product_id)
-                    .then(product => {
-                        order.products[index] =  product;
-                    })
+    getProductsof: (id) => new Promise( (resolve,reject)=>{
+        
+        orderModel.findById(id,async (err,order)=>{
+            let aux=[];
+        //     order.products.forEach(async (product_id) => {
+        //         console.log(product_id)
+        //         await productController.getProduct(product_id)
+        //             .then(product =>  aux.push(product_id) )
+        //             .catch(err=>reject(err));
+        //     });
+        //     order.products=aux;
+        //     if(err){reject(err)}
+        //      resolve(order);
+            for(let product_id in order.products){
+                await productController.getProduct(product_id)
+                    .then( product =>  aux.push(product) )
                     .catch(err=>reject(err));
-            });
-            if(err){reject(err)}
-            resolve(order);
+            }
+            order.products=aux;
+            
         })
     }),
     getClientof:(id)=>new Promise ((resolve,reject)=>{
