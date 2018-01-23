@@ -3,17 +3,8 @@ const chai = require('chai');
 const should = chai.should();
 const clientController = require('../../src/controllers/Client')();
 const clientModel = require('../../src/db/models/client');
-
-const config = {
-    logger: false,
-    dbConfig: {
-        domain: '127.0.0.1',
-        port: '27017',
-        dbName: 'shopping-cart'
-    }
-};
-
-const server = require('../../src/server')(config);
+const server = require('../../src/server')({ logger: false });
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {}).catch(err => {});
 
 describe('ClientController', () => {
     it('Should create a client', done => {

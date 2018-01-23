@@ -2,8 +2,6 @@ const ClientModel = require('../db/models/client');
 
 module.exports = () => ({
     getClient: id => new Promise((resolve, reject) => {
-
-        console.log('plpl', id);
         ClientModel.findById(id, (err, doc) => {
             if(err)
                 reject(err);
