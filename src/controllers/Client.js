@@ -56,7 +56,7 @@ module.exports = () => ({
     }),
     getRandomClient: () => new Promise((resolve, reject) => {
         ClientModel.find({}, (err, docs) => {
-            if(err)
+            if(err || docs.length < 1)
                 reject(err);
             let client = docs.splice(0, 1)[0];
             resolve(client);
