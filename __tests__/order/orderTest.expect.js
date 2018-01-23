@@ -171,60 +171,60 @@ describe('Types Order',function(){
                 done();
             });
         }).catch(err=>{done(err)});
-        it('Should check the type of the update order', done => {
-            orderController.getRandomOrder().then(result => {
-                order = result;
-                let id = order._id;
-                supertest(server).put(`/api/order/${id}`)
-                .send(order)
-                .expect(200)
-                .end(function(err,res){
-                    expect(res.body).to.have.property('status');
-                    expect(res.body.status).to.not.equal(null);
-                    expect(res.body).to.have.property('date');
-                    expect(res.body.date).to.not.equal(null);
-                    expect(res.body).to.have.property('products');
-                    expect(res.body.products).to.not.equal(null);
-                    expect(res.body).to.have.property('client_id');
-                    expect(res.body.client_id).to.not.equal(null);
-                    expect(res.body).to.have.property('created_at');
-                    expect(res.body.created_at).to.not.equal(null);
-                    expect(res.body).to.have.property('updated_at');
-                    expect(res.body.updated_at).to.not.equal(null);
-                    expect(res.body).to.have.property('deleted_at');
-                    expect(res.body.deleted_at).to.not.equal(null);
-                    done();
-                });
-            }).catch(err=>{done(err)});
-        });
+    });
+    it('Should check the type of the update order', done => {
+        orderController.getRandomOrder().then(result => {
+            order = result;
+            let id = order._id;
+            supertest(server).put(`/api/order/${id}`)
+            .send(order)
+            .expect(200)
+            .end(function(err,res){
+                expect(res.body).to.have.property('status');
+                expect(res.body.status).to.not.equal(null);
+                expect(res.body).to.have.property('date');
+                expect(res.body.date).to.not.equal(null);
+                expect(res.body).to.have.property('products');
+                expect(res.body.products).to.not.equal(null);
+                expect(res.body).to.have.property('client_id');
+                expect(res.body.client_id).to.not.equal(null);
+                expect(res.body).to.have.property('created_at');
+                expect(res.body.created_at).to.not.equal(null);
+                expect(res.body).to.have.property('updated_at');
+                expect(res.body.updated_at).to.not.equal(null);
+                expect(res.body).to.have.property('deleted_at');
+                expect(res.body.deleted_at).to.not.equal(null);
+                done();
+            });
+        }).catch(err=>{done(err)});
     });
 });
 describe('Controller Order',function(){
-    it('Get a order',function(){
+    it('Get a order',done => {
         orderController.getRandomOrder().then(order=>{
             let id = order._id;
             orderController.getOrder(id).then(res=>{
-                res.should.equal(order);
+                res.should.equal('object');
                 done();
             }).catch(err=>done(err))
-        });
+        }).catch(err=>done(err));
     });
-    it('Delete a order',function(){
+    it('Delete a order',done => {
         orderController.getRandomOrder().then(order=>{
             let id = order._id;
             orderController.deleteOrder(id).then(res=>{
                 res.should.be.a('string');
                 done();
             }).catch(err=>done(err))
-        });
+        }).catch(err=>done(err));
     });
-    it('Post a order',function(){
+    it('Post a order',done => {
         orderController.postOrder(orderObj).then(order=>{
             order.should.equal(orderObj);
             done();
         }).catch(err=>done(err));
     });
-    it('Get fetch all order',function(){   
+    it('Get fetch all order',done => {   
         orderController.getAllOrders().then(order=>{
             if(!order){
                 order[0].should.to.have.property('status');
@@ -245,13 +245,13 @@ describe('Controller Order',function(){
             done();
         }).catch(err=>done(err));
     });
-    it('Update a order',function(){
+    it('Update a order',done => {
         orderController.getRandomOrder().then(order=>{
             let id = order._id;
             orderController.updateOrder(id,orderObj).then(res=>{
                 res.should.equal(orderObj);
                 done();
             }).catch(err=>done(err))
-        })
-    })
+        }).catch(err=>done(err))
+    })   
 });

@@ -1,5 +1,6 @@
-
 const orderModel = require('../db/models/order');
+const productController = require('../controllers/Product')()
+const clientController = require('../controllers/Client')()
 
 module.exports = () => ({
     getOrder: id => { return new Promise((resolve,reject)=>{
@@ -55,7 +56,7 @@ module.exports = () => ({
             resolve(order);
         })}
         else{
-            reject(err, 'No compatible types')
+            reject();
         }
     }),
     
@@ -66,5 +67,28 @@ module.exports = () => ({
             let order = docs.splice(0, 1)[0];
             resolve(order);
         });
+    }),
+    getProductsof: (id) => new Promise((resolve,reject)=>{
+        let products = [];
+        orderModel.findById(id,(err,order)=>{
+            order.products.forEach((product,index) => {
+                productController.getProduct(product).then(product=>{
+                    order.products[index]=product;
+                });
+            });
+            if(err){reject(err)}
+            resolve(order);
+        })
+    }),
+    getClientof:(id)=>new Promise ((resolve,reject)=>{
+        let client;
+        orderModel.findById(id,(err,order)=>{
+            clientController.getClient(id).then(result=>{
+                client=result;
+                if(err)reject(err);
+                resolve(client)
+            }).catch(err=>reject(err))
+        })
+        
     })
-});
+}); 
