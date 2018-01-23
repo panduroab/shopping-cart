@@ -70,10 +70,13 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id/products', (req,res)=>{
-    orderCrtl.getProductsof(req.params.id).then(products=>{
-        if(products.length<1){res.status(404).send({name:'Aqui toy'})}
-        else
-        res.status(200).send(products);
+    orderCrtl.getProductsof(req.params.id).then(result => {
+        // console.log(result);
+        if(result.length < 1) {
+            res.status(404).send({name:'Aqui toy'});
+        } else {
+            res.status(200).send(result);
+        }
     }).catch(err=>res.status(500).send('Internal Server Error'))
-})
+});
 module.exports = router;
