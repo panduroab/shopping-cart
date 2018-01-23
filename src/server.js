@@ -5,17 +5,9 @@ const app = express();
 const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes');
 const ClientRoutes = require('./routes/clientRoutes');
-const db = require('./db/db');
 const path = require('path');
 
 module.exports = config => {
-    db(config.dbConfig).then(connection => {
-        if(config.logger)
-            console.log('Connected to MongoDB succesfully!!');
-    }).catch(err => {
-        console.log(err);
-    });
-
     if(config.logger)
         app.use(logger(config.logger));
     app.use(bodyParser.json());
