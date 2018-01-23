@@ -1,23 +1,19 @@
 const productModel = require('../db/models/product');
 
 module.exports = () => ({
-    getProduct: id => { new Promise((resolve, reject ) => {
+    getProduct: id =>  new Promise((resolve, reject ) => {
         productModel.findById(id, (err, doc) => {
+            if(err){reject(err);}
             resolve(doc);
-            reject(err);
         })
-    })
-    },
-
-    getProducts: () => { new Promise((resolve,reject) => {
+    }),
+    getProducts: () =>  new Promise((resolve,reject) => {
         productModel.find({}, (err, docs) => {
             resolve(docs);
             reject(err);
         })
-    })
-    },
-
-    updateProduct: (id, body) => { new Promise((resolve, reject) => {
+    }),
+    updateProduct: (id, body) =>  new Promise((resolve, reject) => {
         productModel.findById(id, (err,product) => {
             if(err){
                 res.status(500).send(err);
@@ -33,16 +29,14 @@ module.exports = () => ({
             resolve(product);
             reject(err);
         })
-    })
-    },
+    }),
 
-    deleteProdut: id => { new Promise((resolve, reject) => {
+    deleteProdut: id => new Promise((resolve, reject) => {
         productModel.find(id, (err,product) => {
             resolve(product);
             reject(err);
         })
-    })
-    },
+    }),
 
     getRamProduct: () => new Promise((resolve, reject) => {
         productModel.find({}, (err, docs) => {
