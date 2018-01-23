@@ -201,8 +201,6 @@ describe('Types client', () => {
             "address": "Mi casa"
         };
         clientController.getRandomClient().then(result => {
-            console.log(result);
-            
             supertest(server).put(`/api/client/${result._id}`)
                 .expect(200)
                 .send(clientObj)

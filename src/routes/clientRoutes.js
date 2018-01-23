@@ -70,7 +70,6 @@ router.put('/:id', (req, res) => {
                     res.status(200).send(cli);
                 });
             } else {
-                console.log('entra else');
                 res.status(404).send(cli);
             }
         });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const OrderModel = require('../db/models/order');
+const orderCrtl = require('../controllers/Order')
 
 router.get('/', (req, res) => {
     OrderModel.find({}, (err, order) => {
@@ -68,4 +69,9 @@ router.delete('/:id', (req, res) => {
     );
 });
 
+router.get('/:id/products', (req,res)=>{
+    orderCrtl.getProductsof(id).then(products=>{
+        
+    })
+})
 module.exports = router;
