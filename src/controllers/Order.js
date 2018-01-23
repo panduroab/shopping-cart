@@ -70,11 +70,13 @@ module.exports = () => ({
     }),
     getProductsof: (id) => new Promise((resolve,reject)=>{
         let products = [];
-        orderModel.findById(id,(err,order)=>{
-            order.products.forEach((product,index) => {
-                productController.getProduct(product).then(product=>{
-                    order.products[index]=product;
-                });
+        orderModel.findById(id, (err,order)=>{
+            order.products.forEach((product_id,index) => {
+                productController.getProduct(product_id)
+                    .then(product => {
+                        order.products[index] =  product;
+                    })
+                    .catch(err=>reject(err));
             });
             if(err){reject(err)}
             resolve(order);

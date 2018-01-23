@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const OrderModel = require('../db/models/order');
-const orderCrtl = require('../controllers/Order')
+const orderCrtl = require('../controllers/Order')();
 
 router.get('/', (req, res) => {
     OrderModel.find({}, (err, order) => {
@@ -70,8 +70,10 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id/products', (req,res)=>{
-    orderCrtl.getProductsof(id).then(products=>{
-        
-    })
+    orderCrtl.getProductsof(req.params.id).then(products=>{
+        if(products.length<1){res.status(404).send({name:'Aqui toy'})}
+        else
+        res.status(200).send(products);
+    }).catch(err=>res.status(500).send('Internal Server Error'))
 })
 module.exports = router;
