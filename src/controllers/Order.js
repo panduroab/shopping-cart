@@ -4,10 +4,24 @@ const clientController = require('../controllers/Client')()
 
 module.exports = () => ({
     getOrder: id => { return new Promise((resolve,reject)=>{
-        orderModel.findById(id,(err,doc)=>{
-            if(err) { reject(err)};
-            resolve(doc);  
-        })
+        orderModel.findById(id, async (err, order) => {
+            if(err)
+                reject(err);
+            let products = [];
+            for(let product_id of order.products){
+                await productController.getProduct(product_id)
+                .then(product =>{ products.push(product)
+                    console.log(product);
+                    
+                })
+                .catch(err => reject(err));
+            }
+            order.products = products;
+            await clientController.getClient(order.client_id).then(result=>{                
+                order.client_id = result; 
+            }).catch(err=>reject(err));
+            resolve(order);
+        });
     })
     },
     getAllOrders: () => {return new Promise((resolve,reject)=>{
@@ -27,7 +41,7 @@ module.exports = () => ({
     updateOrder: (id, body) => {return new Promise((resolve,reject)=>{
         orderModel.findById(id, (err, doc) => {
             if (err) {
-                res.status(500).send(err);
+                reject(err)
             } else {
                 doc.status = body.status ;
                 doc.date = body.date ;               
@@ -36,8 +50,8 @@ module.exports = () => ({
                 doc.updated_at = Date.now();    
                 doc.save((err, doc) => {
                     if (err)
-                        res.status(500).send(err);
-                    res.status(200).send(doc);
+                       reject(err)
+                    resolve(doc) 
                 });
             }
         });
@@ -70,29 +84,15 @@ module.exports = () => ({
     }),
     getProductsof: (id) => new Promise((resolve,reject) => {
         orderModel.findById(id, async (err, order) => {
-
+            if(err)
+                reject(err);
             let products = [];
-            for(let product_id of order.products)
+            for(let product_id of order.products){
                 await productController.getProduct(product_id)
                 .then(product => products.push(product))
                 .catch(err => reject(err));
-            order.products = products;
-
-
-            if(err)
-                reject(err);
-            resolve(order);
+            }
+            resolve(products);
         });
-    }),
-    getClientof:(id)=>new Promise ((resolve,reject)=>{
-        let client;
-        orderModel.findById(id,(err,order)=>{
-            clientController.getClient(id).then(result=>{
-                client=result;
-                if(err)reject(err);
-                resolve(client)
-            }).catch(err=>reject(err))
-        })
-        
     })
 }); 

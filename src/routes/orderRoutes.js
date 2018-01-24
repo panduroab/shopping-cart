@@ -10,13 +10,6 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
-    OrderModel.findById(req.params.id, (err, order) => {
-        if (err) res.status(500).send('Internal Server Error');
-        res.status(200).send(order);
-    });
-});
-
 router.post('/', (req, res) => {
     OrderModel.create({
         status: req.body.status,
@@ -69,14 +62,24 @@ router.delete('/:id', (req, res) => {
     );
 });
 
+router.get('/:id', (req,res)=>{
+    orderCrtl.getOrder(req.params.id).then(result => {
+            if(result.length < 1) {
+                res.status(404).send('Not Found');
+            } else {
+                res.status(200).send(result);
+            }
+    }).catch(err=>res.status(500).send('Internal Server Error '+err))
+});
+
 router.get('/:id/products', (req,res)=>{
     orderCrtl.getProductsof(req.params.id).then(result => {
-        // console.log(result);
-        if(result.length < 1) {
-            res.status(404).send({name:'Aqui toy'});
-        } else {
-            res.status(200).send(result);
-        }
-    }).catch(err=>res.status(500).send('Internal Server Error'))
+            if(result.length < 1) {
+                res.status(404).send('Not Found');
+            } else {
+                res.status(200).send(result);
+            }
+    }).catch(err=>res.status(500).send('Internal Server Error '+err))
 });
+
 module.exports = router;
