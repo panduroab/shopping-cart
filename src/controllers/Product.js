@@ -4,7 +4,7 @@ module.exports = () => ({
     getProduct: id => {
         return new Promise((resolve, reject) => {
             productModel.findById(id, (err, doc) => {
-                if (err) { reject(err); }
+                if(err) reject(err);
                 resolve(doc);
             })
         })
