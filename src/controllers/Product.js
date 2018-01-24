@@ -5,7 +5,8 @@ module.exports = () => ({
         return new Promise((resolve, reject) => {
             productModel.findById(id, (err, doc) => {
                 if(err) reject(err);
-                resolve(doc);
+                if(doc && doc._id) resolve(doc);
+                if(doc===null) resolve({});
             })
         })
     },
@@ -39,7 +40,6 @@ module.exports = () => ({
             productModel.findById(id, (err, product) => {
                 if (err) {
                     reject(err);
-                    //res.status(500).send(err);
                 } else {
                     product.name = body.name;
                     product.price = body.price;
@@ -47,15 +47,11 @@ module.exports = () => ({
                     product.category = body.category;
                     product.save((err, product) => {
                         if (err) {
-                            //res.status(500).send(err);
                             reject(err);
                         }
-                        //res.status(200).send(product);
                         resolve(product);
                     });
                 }
-                //resolve(product);
-                //reject(err);
             });
         });
     },

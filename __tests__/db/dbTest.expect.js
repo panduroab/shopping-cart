@@ -10,7 +10,6 @@ describe('Database connection (mongoDB)', () => {
     };
     it(`should connect to: mongodb://${config.domain}:${config.port}:${config.dbName}`, done => {
         db(config).then(res => {
-            // console.log(res);
             done();
         }).catch(err => {
             done(err);

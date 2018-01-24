@@ -13,9 +13,9 @@ module.exports = () => ({
                     for (let product_id of order.products) {
                         await productController.getProduct(product_id)
                             .then(product => {
-                                // if(product._id ){
+                                if (product._id) {
                                     products.push(product)
-                                // }
+                                }
                             })
                             .catch(err => reject(err));
                     }

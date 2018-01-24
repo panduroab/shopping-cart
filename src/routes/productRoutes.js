@@ -17,7 +17,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    //console.log(req.body);
     if (typeof(req.body.name) === 'string' && typeof(req.body.price) === 'number' && typeof(req.body.description) === 'string') {
 
         ProductModel.create({

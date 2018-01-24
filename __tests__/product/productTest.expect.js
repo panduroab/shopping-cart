@@ -1,7 +1,6 @@
 const supertest = require('supertest');
 const chai = require('chai');
 const assert = require('assert').assert;
-//const assert = require('assert');
 const productController = require('../../src/controllers/Product')();
 const expect = require('chai').expect;
 const should = require('chai').should();
