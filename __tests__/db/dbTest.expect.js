@@ -9,10 +9,6 @@ describe('Database connection (mongoDB)', () => {
         dbName: 'shopping-cart'
     };
     it(`should connect to: mongodb://${config.domain}:${config.port}:${config.dbName}`, done => {
-        db(config).then(res => {
-            done();
-        }).catch(err => {
-            done(err);
-        });
+        db(config).then(res => done()).catch(err => done(err));
     }).timeout(5000);
 });

@@ -104,5 +104,18 @@ module.exports = () => ({
             }
             resolve(products);
         });
+    }),
+
+    getProductsByArr: id => new Promise((resolve, reject) => {
+        orderModel.findById({ _id: id }, (err, order) => {
+            if(err)
+                reject(err);
+            if(!order)
+                resolve({});
+            let idArr = order.products;
+            productController.getProductsArr(idArr)
+                .then(products => resolve(products))
+                .catch(err => reject(err));
+        });
     })
-}); 
+});

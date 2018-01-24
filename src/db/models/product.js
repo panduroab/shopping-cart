@@ -7,7 +7,7 @@ var productSchema = new Schema({
     price:       { type: Number },
     description: { type: String },
     category:    { type: String }
-});
+}, { versionKey: false });
 
 let productModule = mongoose.model(collectionName, productSchema);
 module.exports = productModule;

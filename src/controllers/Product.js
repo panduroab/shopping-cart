@@ -76,5 +76,13 @@ module.exports = () => ({
             let product = docs.splice(0, 1)[0];
             resolve(product);
         });
+    }),
+
+    getProductsArr: idArr => new Promise((resolve, reject) => {
+        productModel.find({ _id: { $in: idArr }}, (err, docs) => {
+            if(err || docs.length < 1)
+                reject(err);
+            resolve(docs);
+        });
     })
 });

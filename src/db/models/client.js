@@ -8,7 +8,7 @@ var clientSchema = new Schema({
     lastnamemo  : String,
     birthdate   : Date,
     address     : String
-});
+}, { versionKey: false });
 
 var clientModel = mongoose.model(collectionName, clientSchema);
 
