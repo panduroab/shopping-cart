@@ -82,4 +82,14 @@ router.get('/:id/products', (req,res)=>{
     }).catch(err=>res.status(500).send('Internal Server Error '+err))
 });
 
+router.get('/:id/productsv2', (req, res) => {
+    orderCrtl.getProductsByArr(req.params.id).then(result => {
+        if(result.length < 1) {
+            res.status(404).send('Not Found');
+        } else {
+            res.status(200).send(result);
+        }
+    }).catch(err=>res.status(500).send('Internal Server Error '+err))
+});
+
 module.exports = router;

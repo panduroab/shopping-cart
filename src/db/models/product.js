@@ -8,7 +8,18 @@ var productSchema = new Schema({
     description: { type: String },
     stock:       { type: Number },
     category:    { type: String }
-});
+}, { versionKey: false });
 
-let productModule = mongoose.model(collectionName, productSchema);
-module.exports = productModule;
+let productModel = mongoose.model(collectionName, productSchema);
+
+module.exports = productModel;
+
+module.exports.getByCategory = category => new Promise((resolve, reject) => {
+    productModel.find({ category: category }, (err, products) => {
+        if(err)
+            reject(err);
+        if(products.length < 1)
+            resolve([]);
+        resolve(products)
+    });
+});

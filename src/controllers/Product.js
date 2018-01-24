@@ -4,8 +4,9 @@ module.exports = () => ({
     getProduct: id => {
         return new Promise((resolve, reject) => {
             productModel.findById(id, (err, doc) => {
-                if (err) { reject(err); }
-                resolve(doc);
+                if(err) reject(err);
+                if(doc && doc._id) resolve(doc);
+                if(doc===null) resolve({});
             })
         })
     },
@@ -40,7 +41,6 @@ module.exports = () => ({
             productModel.findById(id, (err, product) => {
                 if (err) {
                     reject(err);
-                    //res.status(500).send(err);
                 } else {
                     product.name = body.name;
                     product.price = body.price;
@@ -77,6 +77,14 @@ module.exports = () => ({
                 reject(err);
             let product = docs.splice(0, 1)[0];
             resolve(product);
+        });
+    }),
+
+    getProductsArr: idArr => new Promise((resolve, reject) => {
+        productModel.find({ _id: { $in: idArr }}, (err, docs) => {
+            if(err || docs.length < 1)
+                reject(err);
+            resolve(docs);
         });
     })
 });
