@@ -8,13 +8,12 @@ const should = require('chai').should();
 const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => { }).catch(err => { });
 
-const productObj = { name: 'test', price: 1, description: 'test description' };
+const productObj = { name: 'test', price: 1, description: 'test description' ,category:'other'};
 
 describe('CONTROLLER Product', function () {
     let product = {};
 
     it('should post a product', done => {
-        let productObj = { name: 'testController', price: 2, description: 'test at controller' };
         productController.postProduct(productObj).then(product => {
             product.should.to.have.property('name');
             product.name.should.to.not.equal(null);
@@ -47,6 +46,8 @@ describe('CONTROLLER Product', function () {
                 result.price.should.to.not.equal(null);
                 result.should.to.have.property('description');
                 result.description.should.to.not.equal(null);
+                result.should.to.have.property('category');
+                result.category.should.to.not.equal(null);
                 done();
             }).catch(err => done(err));
         }).catch();
@@ -55,7 +56,6 @@ describe('CONTROLLER Product', function () {
         productController.getRamProduct().then(result => {
             let product = result;
             let id = product._id;
-            let productObj = { name: 'test', price: 2, description: 'test description' };
             productController.updateProduct(id, productObj).then(product => {
                 product.should.to.have.property('name');
                 product.name.should.to.not.equal(null);
@@ -63,6 +63,8 @@ describe('CONTROLLER Product', function () {
                 product.price.should.to.not.equal(null);
                 product.should.to.have.property('description');
                 product.description.should.to.not.equal(null);
+                product.should.to.have.property('category');
+                product.category.should.to.not.equal(null);
                 done();
             }).catch(err => done(err));
         }).catch(err => done(err));
@@ -157,6 +159,8 @@ describe('Types Product', function () {
                 expect(res.body.price).to.not.equal(null);
                 expect(res.body).to.have.property('description');
                 expect(res.body.description).to.not.equal(null);
+                expect(res.body).to.have.property('category');
+                expect(res.body.category).should.to.not.equal(null);
                 done();
             });
     });
@@ -170,6 +174,8 @@ describe('Types Product', function () {
                 expect(res.body[0].price).to.not.equal(null);
                 expect(res.body[0]).to.have.property('description');
                 expect(res.body[0].description).to.not.equal(null);
+                expect(res.body[0]).to.have.property('category');
+                expect(res.body[0].category).should.to.not.equal(null);
                 done();
             });
     });
@@ -186,6 +192,8 @@ describe('Types Product', function () {
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
                     expect(product.description).to.not.equal(null);
+                    expect(res.body).to.have.property('category');
+                    expect(res.body.category).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => { done(err); });
@@ -204,6 +212,8 @@ describe('Types Product', function () {
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
                     expect(product.description).to.not.equal(null);
+                    expect(product).to.have.property('category');
+                    expect(product.category).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => done(err));
@@ -221,6 +231,8 @@ describe('Types Product', function () {
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
                     expect(product.description).to.not.equal(null);
+                    expect(product).to.have.property('category');
+                    expect(product.category).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => done(err));

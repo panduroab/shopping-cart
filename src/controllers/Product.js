@@ -24,7 +24,8 @@ module.exports = () => ({
             let productObj = {
                 name: body.name,
                 price: body.price,
-                description: body.description
+                description: body.description,
+                category: body.category
             };
             productModel.create(productObj, (err, doc) => {
                 if (err) { reject(err); }
@@ -43,6 +44,7 @@ module.exports = () => ({
                     product.name = body.name;
                     product.price = body.price;
                     product.description = body.description;
+                    product.category = body.category;
                     product.save((err, product) => {
                         if (err) {
                             //res.status(500).send(err);
