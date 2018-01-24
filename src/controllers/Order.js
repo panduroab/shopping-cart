@@ -10,10 +10,7 @@ module.exports = () => ({
             let products = [];
             for(let product_id of order.products){
                 await productController.getProduct(product_id)
-                .then(product =>{ products.push(product)
-                    console.log(product);
-                    
-                })
+                .then(product => products.push(product))
                 .catch(err => reject(err));
             }
             order.products = products;
@@ -83,7 +80,7 @@ module.exports = () => ({
         });
     }),
     getProductsof: (id) => new Promise((resolve,reject) => {
-        orderModel.findById(id, async (err, order) => {
+        orderModel.findById(id,{ __v: 0}, async (err, order) => {
             if(err)
                 reject(err);
             let products = [];

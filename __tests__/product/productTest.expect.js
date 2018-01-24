@@ -1,14 +1,15 @@
 const supertest = require('supertest');
 const chai = require('chai');
 const assert = require('assert').assert;
-//const assert = require('assert');
 const productController = require('../../src/controllers/Product')();
 const expect = require('chai').expect;
 const should = require('chai').should();
+const mongoose = require('mongoose');
 const server = require('../../src/server')({ logger: false });
-const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => { }).catch(err => { });
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => { });
 
-const productObj = { name: 'test', price: 1, description: 'test description' ,category:'other'};
+
+const productObj = { name: 'test', price: 1, description: 'test description' ,stock: 3,category:'other'};
 
 describe('CONTROLLER Product', function () {
     let product = {};
@@ -21,6 +22,10 @@ describe('CONTROLLER Product', function () {
             product.price.should.to.not.equal(null);
             product.should.to.have.property('description');
             product.description.should.to.not.equal(null);
+            product.should.to.have.property('stock');
+            product.stock.should.to.not.equal(null);
+            product.should.to.have.property('category');
+            product.category.should.to.not.equal(null);
             done();
         }).catch(err => done(err));
     });
@@ -32,6 +37,10 @@ describe('CONTROLLER Product', function () {
             result[0].price.should.to.not.equal(null);
             result[0].should.to.have.property('description');
             result[0].description.should.to.not.equal(null);
+            result[0].should.to.have.property('stock');
+            result[0].stock.should.to.not.equal(null);
+            result[0].should.to.have.property('category');
+            result[0].category.should.to.not.equal(null);
             done();
         }).catch(err => done(err));
     });
@@ -46,6 +55,10 @@ describe('CONTROLLER Product', function () {
                 result.price.should.to.not.equal(null);
                 result.should.to.have.property('description');
                 result.description.should.to.not.equal(null);
+                result.should.to.have.property('category');
+                result.category.should.to.not.equal(null);
+                result.should.to.have.property('stock');
+                result.stock.should.to.not.equal(null);
                 result.should.to.have.property('category');
                 result.category.should.to.not.equal(null);
                 done();
@@ -63,6 +76,8 @@ describe('CONTROLLER Product', function () {
                 product.price.should.to.not.equal(null);
                 product.should.to.have.property('description');
                 product.description.should.to.not.equal(null);
+                product.should.to.have.property('stock');
+                product.stock.should.to.not.equal(null);
                 product.should.to.have.property('category');
                 product.category.should.to.not.equal(null);
                 done();
@@ -161,6 +176,8 @@ describe('Types Product', function () {
                 expect(res.body.description).to.not.equal(null);
                 expect(res.body).to.have.property('category');
                 expect(res.body.category).should.to.not.equal(null);
+                expect(res.body).to.have.property('stock');
+                expect(res.body.stock).should.to.not.equal(null);
                 done();
             });
     });
@@ -174,6 +191,8 @@ describe('Types Product', function () {
                 expect(res.body[0].price).to.not.equal(null);
                 expect(res.body[0]).to.have.property('description');
                 expect(res.body[0].description).to.not.equal(null);
+                expect(res.body[0]).to.have.property('stock');
+                expect(res.body[0].stock).should.to.not.equal(null);
                 expect(res.body[0]).to.have.property('category');
                 expect(res.body[0].category).should.to.not.equal(null);
                 done();
@@ -192,8 +211,10 @@ describe('Types Product', function () {
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
                     expect(product.description).to.not.equal(null);
-                    expect(res.body).to.have.property('category');
-                    expect(res.body.category).should.to.not.equal(null);
+                    expect(product).to.have.property('stock');
+                    expect(product.stock).should.to.not.equal(null);
+                    expect(product).to.have.property('category');
+                    expect(product.category).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => { done(err); });
@@ -211,6 +232,8 @@ describe('Types Product', function () {
                     expect(product).to.have.property('price');
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
+                    expect(product).to.have.property('stock');
+                    expect(product.stock).should.to.not.equal(null);
                     expect(product.description).to.not.equal(null);
                     expect(product).to.have.property('category');
                     expect(product.category).should.to.not.equal(null);
@@ -231,6 +254,8 @@ describe('Types Product', function () {
                     expect(product.price).to.not.equal(null);
                     expect(product).to.have.property('description');
                     expect(product.description).to.not.equal(null);
+                    expect(product).to.have.property('stock');
+                    expect(product.stock).should.to.not.equal(null);
                     expect(product).to.have.property('category');
                     expect(product.category).should.to.not.equal(null);
                     done();

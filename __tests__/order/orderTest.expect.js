@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 const assert = require('assert').assert;
 const orderController = require('../../src/controllers/Order')();
 const server = require('../../src/server')({ logger: false });
-const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {}).catch(err => {});
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => {});
 
 const orderObj = { status: 'pending', products: [], client_id: 1 };
 

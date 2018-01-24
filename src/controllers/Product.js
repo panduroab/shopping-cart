@@ -25,6 +25,7 @@ module.exports = () => ({
                 name: body.name,
                 price: body.price,
                 description: body.description,
+                stock: body.stock,
                 category: body.category
             };
             productModel.create(productObj, (err, doc) => {
@@ -44,18 +45,15 @@ module.exports = () => ({
                     product.name = body.name;
                     product.price = body.price;
                     product.description = body.description;
+                    product.stock = body.stock;
                     product.category = body.category;
                     product.save((err, product) => {
                         if (err) {
-                            //res.status(500).send(err);
                             reject(err);
                         }
-                        //res.status(200).send(product);
                         resolve(product);
                     });
                 }
-                //resolve(product);
-                //reject(err);
             });
         });
     },

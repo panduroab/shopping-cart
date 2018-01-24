@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 const clientController = require('../../src/controllers/Client')();
 const clientModel = require('../../src/db/models/client');
 const server = require('../../src/server')({ logger: false });
-const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => { }).catch(err => { });
+const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => { });
 
 describe('ClientController', () => {
     it('Should create a client', done => {
