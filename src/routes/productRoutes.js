@@ -17,13 +17,13 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    //console.log(req.body);
     if (typeof(req.body.name) === 'string' && typeof(req.body.price) === 'number' && typeof(req.body.description) === 'string') {
 
         ProductModel.create({
             name: req.body.name,
             price: req.body.price,
-            description: req.body.description
+            description: req.body.description,
+            category: req.body.category
         }, (err, prod) => {
             if (err) {res.status(500).send('Internal Server Error')};
             res.status(200).send(prod);
@@ -44,6 +44,7 @@ router.put('/:id', (req, res) => {
                 prod.name = req.body.name || prod.name;
                 prod.price = req.body.price || prod.price;
                 prod.description = req.body.description || prod.description;
+                prod.category = req.body.category || prod.category;
                 prod.save((err, prod) => {
                     if (err)
                         res.status(500).send(err);

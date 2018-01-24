@@ -7,7 +7,8 @@
     "start": "node index",
     "test": "mocha __tests__/**/*.js --exit && mocha __tests__/**/*.js --exit --reporter=nyan ",
     "test-client": "mocha __tests__/client/*.js --exit",
-    "test-chido": "mocha __tests__/order/*.js --exit",
+    "test-order": "mocha __tests__/order/*.js --exit",
+    "test-product": "mocha __tests__/product/*.js --exit",
     "nodemon": "nodemon index.js"
   },
   "author": "@panduroab",
