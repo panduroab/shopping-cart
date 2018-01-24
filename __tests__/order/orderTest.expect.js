@@ -213,7 +213,7 @@ describe('Controller Order',function(){
         orderController.getRandomOrder().then(order=>{
             let id = order._id;
             orderController.deleteOrder(id).then(res=>{
-                res.should.be.a('string');
+                res.should.be.a('object');
                 done();
             }).catch(err=>done(err))
         }).catch(err=>done(err));
