@@ -1,14 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const ProductModel = require('../db/models/product');
+const CategoryModel = require('../db/models/category');
 
 router.get('/search', (req, res) => {
     let value = req.query.value;
-    if(!value)
-        res.send('no search param provided (?value=product_name)')
-    ProductModel.getByName(value)
-        .then(products => res.status(200).send(products))
-        .catch(err => res.status(500).send(err))
+    let category = req.query.category;
+    if(!value && !category)
+        res.send('either use value or category to search')
+    else if(value)
+        ProductModel.getByName(value)
+            .then(products => res.status(200).send(products))
+            .catch(err => res.status(500).send(err))
+    else
+        CategoryModel.getProductsOn(category)
+            .then(products => res.status(200).send(products))
+            .catch(err => res.status(500).send(err));
 });
 
 router.get('/', (req, res) => {
