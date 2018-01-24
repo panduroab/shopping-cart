@@ -2,9 +2,19 @@ const express = require('express');
 const router = express.Router();
 const ProductModel = require('../db/models/product');
 
+router.get('/search', (req, res) => {
+    let value = req.query.value;
+    if(!value)
+        res.send('no search param provided (?value=product_name)')
+    ProductModel.getByName(value)
+        .then(products => res.status(200).send(products))
+        .catch(err => res.status(500).send(err))
+});
+
 router.get('/', (req, res) => {
     ProductModel.find({}, (err, prod) => {
-        if (err) res.status(500).send("Internal Server Error");
+        if(err)
+            res.status(500).send("Internal Server Error");
         res.status(200).send(prod);
     });
 });

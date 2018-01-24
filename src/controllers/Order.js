@@ -92,15 +92,9 @@ module.exports = () => ({
             resolve(order);
         });
     }),
-<<<<<<< HEAD
-    getProductsof: (id) => new Promise((resolve,reject) => {
-        orderModel.findById(id,{ __v: 0}, async (err, order) => {
-            if(err)
-=======
     getProductsof: (id) => new Promise((resolve, reject) => {
         orderModel.findById(id, async (err, order) => {
             if (err)
->>>>>>> 7996b2b7adc46c6fedd6676697020ed6f9149076
                 reject(err);
             let products = [];
             for (let product_id of order.products) {
