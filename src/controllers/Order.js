@@ -22,8 +22,11 @@ module.exports = () => ({
                                 objAux.stock = product.stock;
                                 objAux.category = product.category;
                                 objAux.quantity = cant;
-                                if (product) {
+                                if (product.id) {
                                     products.push(objAux);
+                                }else{
+                                    let objAviso = { message: 'id does not exist' }
+                                    products.push(objAviso);
                                 }
                             })
                             .catch(err => reject(err));
@@ -108,7 +111,7 @@ module.exports = () => ({
                 reject(err);
             let products = [];
             for (let product of order.products) {
-                await productController.getProduct(product.id)
+                await productController.getProduct(product.product)
                     .then(product => products.push(product))
                     .catch(err => reject(err));
             }
@@ -122,7 +125,7 @@ module.exports = () => ({
                 reject(err);
             if(!order)
                 resolve({});
-            let idArr = order.products;
+            let idArr = order.products.map(product => product.product);
             productController.getProductsArr(idArr)
                 .then(products => resolve(products))
                 .catch(err => reject(err));
