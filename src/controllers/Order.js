@@ -75,7 +75,7 @@ module.exports = () => ({
             typeof (order.updateOrder) == 'Date' &&
             typeof (order.deleted_at) == 'Date') {
             orderModel.create(order, (err, order) => {
-                if (err) { reject(err) }
+                if (err) reject(err);
                 resolve(order);
             })
         }
@@ -92,15 +92,9 @@ module.exports = () => ({
             resolve(order);
         });
     }),
-<<<<<<< HEAD
-    getProductsof: (id) => new Promise((resolve,reject) => {
-        orderModel.findById(id,{ __v: 0}, async (err, order) => {
-            if(err)
-=======
     getProductsof: (id) => new Promise((resolve, reject) => {
         orderModel.findById(id, async (err, order) => {
             if (err)
->>>>>>> 7996b2b7adc46c6fedd6676697020ed6f9149076
                 reject(err);
             let products = [];
             for (let product_id of order.products) {
@@ -114,9 +108,9 @@ module.exports = () => ({
 
     getProductsByArr: id => new Promise((resolve, reject) => {
         orderModel.findById({ _id: id }, (err, order) => {
-            if(err)
+            if (err)
                 reject(err);
-            if(!order)
+            if (!order)
                 resolve({});
             let idArr = order.products;
             productController.getProductsArr(idArr)
