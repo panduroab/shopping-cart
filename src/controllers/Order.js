@@ -10,11 +10,20 @@ module.exports = () => ({
                     reject(err);
                 if (order) {
                     let products = [];
-                    for (let product_id of order.products) {
-                        await productController.getProduct(product_id)
+                    for (let product of order.products) {
+                        let cant = product.quantity;
+                        await productController.getProduct(product.product)
                             .then(product => {
-                                if (product._id) {
-                                    products.push(product)
+                                let objAux = {};
+                                objAux._id = product._id;
+                                objAux.name = product.name;
+                                objAux.price = product.price;
+                                objAux.description = product.description;
+                                objAux.stock = product.stock;
+                                objAux.category = product.category;
+                                objAux.quantity = cant;
+                                if (product) {
+                                    products.push(objAux);
                                 }
                             })
                             .catch(err => reject(err));
@@ -68,12 +77,10 @@ module.exports = () => ({
     },
     postOrder: (order) => new Promise((resolve, reject) => {
         if (typeof (order.status) == 'String' &&
-            typeof (order.date) == 'Date' &&
-            Array.isArray(products) &&
-            typeof (order.client_id) == 'String' &&
-            typeof (order.created_at) == 'Date' &&
-            typeof (order.updateOrder) == 'Date' &&
-            typeof (order.deleted_at) == 'Date') {
+        typeof (order.date) == 'Date' &&
+        Array.isArray(products) &&
+        typeof (order.client_id) == 'String') {
+            console.log('llllll',order);
             orderModel.create(order, (err, order) => {
                 if (err) reject(err);
                 resolve(order);
@@ -97,8 +104,8 @@ module.exports = () => ({
             if (err)
                 reject(err);
             let products = [];
-            for (let product_id of order.products) {
-                await productController.getProduct(product_id)
+            for (let product of order.products) {
+                await productController.getProduct(product.id)
                     .then(product => products.push(product))
                     .catch(err => reject(err));
             }
