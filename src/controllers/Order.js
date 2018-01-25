@@ -24,7 +24,7 @@ module.exports = () => ({
                                 objAux.quantity = cant;
                                 if (product.id) {
                                     products.push(objAux);
-                                }else{
+                                } else {
                                     let objAviso = { message: 'id does not exist' }
                                     products.push(objAviso);
                                 }
@@ -78,19 +78,28 @@ module.exports = () => ({
             });
         })
     },
+
     postOrder: (order) => new Promise((resolve, reject) => {
-        if (typeof (order.status) == 'String' &&
-        typeof (order.date) == 'Date' &&
-        Array.isArray(products) &&
-        typeof (order.client_id) == 'String') {
-            console.log('llllll',order);
+        if (Array.isArray(order.products) && typeof (order.products[0].product) === 'string' && typeof (order.products[0].quantity) === 'number') {
+            for (let i = 0; i < order.products.length; i++) {
+                productController.getProduct(order.products[i].product)
+                    .then(result => {
+                        if (order.products[i].quantity > result.stock) {
+                            resolve("Products out of stock");
+                        }
+                    }).catch(err => reject('Internal Server Error ' + err));
+            }
             orderModel.create(order, (err, order) => {
                 if (err) reject(err);
+                // FIXME: consultar productos y existencias
+                // - comparar existencia con solicitado
+                // - actualizar existencias
+                // - crear orden 
                 resolve(order);
             })
         }
         else {
-            reject();
+            reject(err);
         }
     }),
 

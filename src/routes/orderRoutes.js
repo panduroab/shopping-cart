@@ -22,10 +22,10 @@ router.get('/', (req, res) => {
 //     });
 // });
 
-router.post('/', (req, res) => {
+router.post('/', (req, response) => {
     orderCrtl.postOrder(req.body)
-        .then()
-        .catch(err => res.status().send(err));
+        .then(res => response.status(200).send(res))
+        .catch(err => response.status(400).send(err)); //cambiar status
 });
 
 router.put('/:id', (req, res) => {
