@@ -10,18 +10,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// router.post('/', (req, res) => {
-//     OrderModel.create({
-//         status: req.body.status,
-//         products: req.body.products,
-//         client_id: req.body.client_id
-//     }, (err, order) => {
-//         if (err)
-//             res.status(500).send({});
-//         res.status(200).send(order);
-//     });
-// });
-
 router.post('/', (req, response) => {
     orderCrtl.postOrder(req.body)
         .then(res => response.status(200).send(res))

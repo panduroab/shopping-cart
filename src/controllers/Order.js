@@ -79,24 +79,37 @@ module.exports = () => ({
         })
     },
 
-    postOrder: (order) => new Promise((resolve, reject) => {
+    // FIXME: consultar productos y existencias
+    // - comparar existencia con solicitado
+    // - actualizar existencias
+    // - crear orden 
+    postOrder: (order) => new Promise(async (resolve, reject) => {
         if (Array.isArray(order.products) && typeof (order.products[0].product) === 'string' && typeof (order.products[0].quantity) === 'number') {
-            for (let i = 0; i < order.products.length; i++) {
-                productController.getProduct(order.products[i].product)
+            let rejected_products = [];
+            let stock_products = [];
+            for (let product of order.products) {
+                await productController.getProduct(product.product)
                     .then(result => {
-                        if (order.products[i].quantity > result.stock) {
-                            resolve("Products out of stock");
+                        stock_products.unshift(result.stock);
+                        if (product.quantity > result.stock) {
+                            rejected_products.push(product.product);
                         }
-                    }).catch(err => reject('Internal Server Error ' + err));
+                    }).catch(err => reject(err));
             }
-            orderModel.create(order, (err, order) => {
-                if (err) reject(err);
-                // FIXME: consultar productos y existencias
-                // - comparar existencia con solicitado
-                // - actualizar existencias
-                // - crear orden 
-                resolve(order);
-            })
+            let mess = "Products out of stock: " + rejected_products;
+            if (rejected_products.length > 0) resolve(mess);
+            if (rejected_products.length === 0) {
+                orderModel.create(order, async (err, order) => {
+                    if (err) reject(err);
+                    for (let product of order.products) {
+                        let bodyProduct = {
+                            "stock": stock_products.pop()-product.quantity
+                        };
+                        await productController.updateProduct(product.product, bodyProduct);
+                    }
+                    resolve(order);
+                });
+            }
         }
         else {
             reject(err);

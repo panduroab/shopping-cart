@@ -42,11 +42,11 @@ module.exports = () => ({
                 if (err) {
                     reject(err);
                 } else {
-                    product.name = body.name;
-                    product.price = body.price;
-                    product.description = body.description;
-                    product.stock = body.stock;
-                    product.category = body.category;
+                    product.name = body.name? body.name : product.name;
+                    product.price = body.price? body.price : product.price;
+                    product.description = body.description? body.description : product.description;
+                    product.stock = body.stock? body.stock : product.stock;
+                    product.category = body.category? body.category : product.category;
                     product.save((err, product) => {
                         if (err) {
                             reject(err);
