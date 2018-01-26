@@ -9,7 +9,7 @@ const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => { });
 
 
-const productObj = { name: 'test', price: 1, description: 'test description' ,stock: 3,category:'other'};
+const productObj = { name: 'test', price: 1, description: 'test description' ,stock: 3,category:'other',url:'www.image.com'};
 
 describe('CONTROLLER Product', function () {
     let product = {};
@@ -26,6 +26,8 @@ describe('CONTROLLER Product', function () {
             product.stock.should.to.not.equal(null);
             product.should.to.have.property('category');
             product.category.should.to.not.equal(null);
+            product.should.to.have.property('url');
+            product.url.should.to.not.equal(null);
             done();
         }).catch(err => done(err));
     });
@@ -41,6 +43,8 @@ describe('CONTROLLER Product', function () {
             result[0].stock.should.to.not.equal(null);
             result[0].should.to.have.property('category');
             result[0].category.should.to.not.equal(null);
+            result[0].should.to.have.property('url');
+            result[0].url.should.to.not.equal(null);
             done();
         }).catch(err => done(err));
     });
@@ -61,6 +65,8 @@ describe('CONTROLLER Product', function () {
                 result.stock.should.to.not.equal(null);
                 result.should.to.have.property('category');
                 result.category.should.to.not.equal(null);
+                result.should.to.have.property('url');
+                result.url.should.to.not.equal(null);
                 done();
             }).catch(err => done(err));
         }).catch();
@@ -80,6 +86,8 @@ describe('CONTROLLER Product', function () {
                 product.stock.should.to.not.equal(null);
                 product.should.to.have.property('category');
                 product.category.should.to.not.equal(null);
+                product.should.to.have.property('url');
+                product.url.should.to.not.equal(null);
                 done();
             }).catch(err => done(err));
         }).catch(err => done(err));
@@ -178,6 +186,8 @@ describe('Types Product', function () {
                 expect(res.body.category).should.to.not.equal(null);
                 expect(res.body).to.have.property('stock');
                 expect(res.body.stock).should.to.not.equal(null);
+                expect(res.body).to.have.property('url');
+                expect(res.body.url).should.to.not.equal(null);
                 done();
             });
     });
@@ -195,6 +205,8 @@ describe('Types Product', function () {
                 expect(res.body[0].stock).should.to.not.equal(null);
                 expect(res.body[0]).to.have.property('category');
                 expect(res.body[0].category).should.to.not.equal(null);
+                expect(res.body[0]).to.have.property('url');
+                expect(res.body[0].url).should.to.not.equal(null);
                 done();
             });
     });
@@ -215,6 +227,8 @@ describe('Types Product', function () {
                     expect(product.stock).should.to.not.equal(null);
                     expect(product).to.have.property('category');
                     expect(product.category).should.to.not.equal(null);
+                    expect(product).to.have.property('url');
+                    expect(product.url).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => { done(err); });
@@ -237,6 +251,8 @@ describe('Types Product', function () {
                     expect(product.description).to.not.equal(null);
                     expect(product).to.have.property('category');
                     expect(product.category).should.to.not.equal(null);
+                    expect(product).to.have.property('url');
+                    expect(product.url).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => done(err));
@@ -258,6 +274,8 @@ describe('Types Product', function () {
                     expect(product.stock).should.to.not.equal(null);
                     expect(product).to.have.property('category');
                     expect(product.category).should.to.not.equal(null);
+                    expect(product).to.have.property('url');
+                    expect(product.url).should.to.not.equal(null);
                     done();
                 });
         }).catch(err => done(err));

@@ -7,7 +7,8 @@ var productSchema = new Schema({
     price:       { type: Number },
     description: { type: String },
     stock:       { type: Number },
-    category:    { type: String }
+    category:    { type: String },
+    url:         { type: String }
 }, { versionKey: false });
 
 let productModel = mongoose.model(collectionName, productSchema);
@@ -22,4 +23,4 @@ module.exports.getByCategory = category => new Promise((resolve, reject) => {
             resolve([]);
         resolve(products)
     });
-});
+}); 

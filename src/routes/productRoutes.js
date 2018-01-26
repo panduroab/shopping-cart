@@ -24,7 +24,8 @@ router.post('/', (req, res) => {
             price: req.body.price,
             description: req.body.description,
             stock: req.body.stock,
-            category: req.body.category
+            category: req.body.category,
+            url: req.body.url
         }, (err, prod) => {
             if (err) {res.status(500).send('Internal Server Error')};
             res.status(200).send(prod);
@@ -47,6 +48,7 @@ router.put('/:id', (req, res) => {
                 prod.description = req.body.description || prod.description;
                 prod.stock = req.body.stock || prod.stock;
                 prod.category = req.body.category || prod.category;
+                prod.url = req.body.url || prod.url;
                 prod.save((err, prod) => {
                     if (err)
                         res.status(500).send(err);
