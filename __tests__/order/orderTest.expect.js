@@ -4,8 +4,8 @@ const should = chai.should();
 const expect = chai.expect;
 const assert = require('assert').assert;
 const orderController = require('../../src/controllers/Order')();
-const clientController = require('../../src/controllers/Client')();
 const productController = require('../../src/controllers/Product')();
+const clientController = require('../../src/controllers/Client')();
 const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => {});
 var orderObj = {};
@@ -31,7 +31,47 @@ beforeEach('Register product',async function (){
     orderObj = { status: 'pending', products: [{product:idProduct,quantity:2}], client_id:idClient };  
 })
 describe('API Order', function () {
-     it('GET should fetch all orders', done => {
+    let global_product;
+    let global_client;
+    before(async () => {
+        let productObj = {
+            name: 'test',
+            price: 100,
+            description: 'test description',
+            stock: 300,
+            category: 'other'
+        };
+        let clientObj = {
+            name: 'name',
+            lastnamefa: 'lastnamefa',
+            lastnamemo: 'lastnamemo',
+            birthdate: '1985-01-23',
+            address: 'address #281'
+        };
+        await productController.postProduct(productObj)
+            .then(product => global_product = product).catch(err => {});
+        await clientController.postClient(clientObj)
+            .then(client => global_client = client).catch(err => {});
+    });
+    it('POST should create an order', done => {
+        let orderObj = {
+            products: [
+                {
+                    product: global_product._id,
+                    quantity: Math.floor(Math.random()*10)+1
+                }
+            ],
+            client_id: global_client._id
+        };
+        supertest(server).post('/api/order')
+            .set('Accept', 'application/json')
+            .send(orderObj)
+            .expect('content-Type', /json/)
+            .expect(200)
+            .then(res => done())
+            .catch(err => done(err));
+    });
+    it('GET should fetch all orders', done => {
         supertest(server).get('/api/order')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -54,18 +94,18 @@ describe('API Order', function () {
             done(err);
         });
     });
-    it('POST should create an order', done => {
-        //TODO: Create and obtain a client and some products (non-hardcoded ids required)
-        supertest(server).post('/api/order')
-            .set('Accept', 'application/json')
-            .send(orderObj)
-            .expect('content-Type', /json/)
-            .expect(200)
-            .then(res => done())
-            .catch(err => done(err));
-    });
     it('Should put an order /id', done => {
         orderController.getRandomOrder().then(result => {
+            let orderObj = {
+                status: 'pending',
+                products: [
+                    {
+                        product: global_product._id.toString(),
+                        quantity: 1
+                    }
+                ],
+                client_id: global_client._id.toString()
+            };
             order = result;
             let id = order._id;
             supertest(server).put(`/api/order/${id}`)
@@ -96,6 +136,28 @@ describe('API Order', function () {
     });
 });
 describe('Types Order',function(){
+    let global_product;
+    let global_client;
+    before(async () => {
+        let productObj = {
+            name: 'test',
+            price: 100,
+            description: 'test description',
+            stock: 300,
+            category: 'other'
+        };
+        let clientObj = {
+            name: 'name',
+            lastnamefa: 'lastnamefa',
+            lastnamemo: 'lastnamemo',
+            birthdate: '1985-01-23',
+            address: 'address #281'
+        };
+        await productController.postProduct(productObj)
+            .then(product => global_product = product).catch(err => {});
+        await clientController.postClient(clientObj)
+            .then(client => global_client = client).catch(err => {});
+    });
     it('GET the type of all orders', done => {
         supertest(server).get('/api/order')
         .expect(200)
@@ -146,7 +208,15 @@ describe('Types Order',function(){
         }).catch(err=>{done(err)});
     });
     it('Check that the element post have the correct type',done=>{
-        //TODO: Create and obtain a client and some products (non-hardcoded ids required)
+        let orderObj = {
+            products: [
+                {
+                    product: global_product._id.toString(),
+                    quantity: Math.floor(Math.random()*10)+1
+                }
+            ],
+            client_id: global_product._id.toString()
+        };
         supertest(server).post('/api/order')
         .set('Accept', 'application/json')
         .send(orderObj)
@@ -222,8 +292,41 @@ describe('Types Order',function(){
     });
 });
 describe('Controller Order',function(){
-    //TODO: Create and obtain a client and some products (non-hardcoded ids required)  
+    let global_product;
+    let global_client;
+    before(async () => {
+        let productObj = {
+            name: 'test',
+            price: 100,
+            description: 'test description',
+            stock: 300,
+            category: 'other'
+        };
+        let clientObj = {
+            name: 'name',
+            lastnamefa: 'lastnamefa',
+            lastnamemo: 'lastnamemo',
+            birthdate: '1985-01-23',
+            address: 'address #281'
+        };
+        await productController.postProduct(productObj)
+            .then(product => {
+                global_product = product;
+            }).catch(err => {});
+        await clientController.postClient(clientObj)
+            .then(client => global_client = client)
+            .catch(err => {});
+    });
     it('Post a order',done => {
+        let orderObj = {
+            products: [
+                {
+                    product: global_product._id.toString(),
+                    quantity: Math.floor(Math.random()*10)+1
+                }
+            ],
+            client_id: global_product._id.toString()
+        };
         orderController.postOrder(orderObj).then(order=>{
             order.should.be.an('object');
             done();
