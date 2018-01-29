@@ -46,7 +46,7 @@ module.exports = () => ({
         return new Promise((resolve, reject) => {
             orderModel.find({}, (err, docs) => {
                 if (err) { reject(err) };
-                resolve(order);
+                resolve(docs);
             })
         })
     },
@@ -78,44 +78,41 @@ module.exports = () => ({
             });
         })
     },
-
-    // FIXME: consultar productos y existencias
-    // - comparar existencia con solicitado
-    // - actualizar existencias
-    // - crear orden 
     postOrder: (order) => new Promise(async (resolve, reject) => {
         if (Array.isArray(order.products) && typeof (order.products[0].product) === 'string' && typeof (order.products[0].quantity) === 'number') {
-            let rejected_products = [];
-            let stock_products = [];
-            for (let product of order.products) {
-                await productController.getProduct(product.product)
+            let unavailable_prds = [];
+            let available_prds = [];
+            for (let product_request of order.products) {
+                await productController.getProduct(product_request.product)
                     .then(result => {
-                        stock_products.unshift(result.stock);
-                        if (product.quantity > result.stock) {
-                            rejected_products.push(product.product);
+                        if (product_request.quantity > result.stock) {
+                            unavailable_prds.push(product_request.product);//id
+                        } else {
+                            result._doc.qty = product_request.quantity;
+                            available_prds.unshift(result);
                         }
                     }).catch(err => reject(err));
             }
-            let mess = "Products out of stock: " + rejected_products;
-            if (rejected_products.length > 0) resolve(mess);
-            if (rejected_products.length === 0) {
-                orderModel.create(order, async (err, order) => {
-                    if (err) reject(err);
-                    for (let product of order.products) {
-                        let bodyProduct = {
-                            "stock": stock_products.pop()-product.quantity
-                        };
-                        await productController.updateProduct(product.product, bodyProduct);
-                    }
-                    resolve(order);
-                });
+            let mess = "Products out of stock: " + unavailable_prds;
+            if (unavailable_prds.length > 0) {
+                return resolve(mess);
+            } else {
+                // Update STOCK before creating the order
+                for(let product of available_prds) {
+                    let bodyProduct = { stock: parseInt((product.stock - product._doc.qty),10) };
+                    await productController.updateProduct(product._id, bodyProduct)
+                        .then(result => {})//!!!
+                        .catch(err => {});//!!!
+                }
             }
-        }
-        else {
-            reject(err);
+            await orderModel.create(order, (err, order) => {
+                if (err) return reject(err);
+                return resolve(order);
+            });
+        } else {
+            reject('Rejected');
         }
     }),
-
     getRandomOrder: () => new Promise((resolve, reject) => {
         orderModel.find({}, (err, docs) => {
             if (err || docs.length < 1)
@@ -137,7 +134,6 @@ module.exports = () => ({
             resolve(products);
         });
     }),
-
     getProductsByArr: id => new Promise((resolve, reject) => {
         orderModel.findById({ _id: id }, (err, order) => {
             if (err)

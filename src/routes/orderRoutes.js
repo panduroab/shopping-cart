@@ -19,7 +19,7 @@ router.post('/', (req, response) => {
 router.put('/:id', (req, res) => {
     if (typeof (req.body.status) === 'string' &&
         Array.isArray(req.body.products) &&
-        typeof (req.body.client_id) === 'number') {
+        typeof (req.body.client_id) === 'string') {
         let id = req.params.id,
             body = req.body;
         OrderModel.findById(id, (err, doc) => {
