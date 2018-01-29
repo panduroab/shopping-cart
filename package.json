@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test": "mocha __tests__/**/*.js --exit && mocha __tests__/**/*.js --exit --reporter=nyan ",
+    "test": "mocha __tests__/**/*.js --exit",
     "test-client": "mocha __tests__/client/*.js --exit",
     "test-order": "mocha __tests__/order/*.js --exit",
     "test-product": "mocha __tests__/product/*.js --exit",

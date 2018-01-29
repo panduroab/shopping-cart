@@ -40,7 +40,7 @@ module.exports = () => ({
     updateProduct: (id, body) => {
         return new Promise((resolve, reject) => {
             productModel.findById(id, (err, product) => {
-                if (err) {
+                if (err || !product) {
                     reject(err);
                 } else {
                     product.name = body.name;
@@ -49,8 +49,6 @@ module.exports = () => ({
                     product.stock = body.stock? body.stock : product.stock;
                     product.category = body.category? body.category : product.category;
                     product.imageUrl = body.imageUrl? body.imageUrl : product.imageUrl;
-                    
-                    
                     product.save((err, product) => {
                         if (err) {
                             reject(err);
