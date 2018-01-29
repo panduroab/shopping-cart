@@ -9,6 +9,7 @@
     "test-client": "mocha __tests__/client/*.js --exit",
     "test-order": "mocha __tests__/order/*.js --exit",
     "test-product": "mocha __tests__/product/*.js --exit",
+    "test-search": "mocha __tests__/search/*.js --exit",
     "nodemon": "nodemon index.js"
   },
   "author": "@panduroab",

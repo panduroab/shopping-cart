@@ -17,12 +17,17 @@ describe('ClientController', () => {
             address: 'address #281'
         };
         clientController.postClient(clientObj)
-            .then(clients => done())
-            .catch(err => done(err));
+            .then(client => {
+                client.should.be.an('object');
+                done();
+            }).catch(err => done(err));
     });
     it('Should fetch all clients', done => {
         clientController.getAllClients()
-            .then(clients => done()).catch(err => done(err));
+            .then(clients => {
+                clients.should.be.an('array');
+                done();
+            }).catch(err => done(err));
     });
     it('Should fetch a client', done => {
         clientController.getRandomClient().then(client => {
@@ -103,7 +108,8 @@ describe('API Client', function () {
                 .end((err, res) => {
                     if (err)
                         return done(err);
-                    done();
+                    else
+                        done();
                 });
         }).catch(err => {
             done(err);
