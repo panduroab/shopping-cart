@@ -1,10 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const ProductModel = require('../db/models/product');
+const CategoryModel = require('../db/models/category');
+
+router.get('/search', (req, res) => {
+    let value = req.query.value;
+    let category = req.query.category;
+    if(!value && !category)
+        res.send('either use value or category to search')
+    else if(value)
+        ProductModel.getByName(value)
+            .then(products => res.status(200).send(products))
+            .catch(err => res.status(500).send(err))
+    else
+        CategoryModel.getProductsOn(category)
+            .then(products => res.status(200).send(products))
+            .catch(err => res.status(500).send(err));
+});
 
 router.get('/', (req, res) => {
     ProductModel.find({}, (err, prod) => {
-        if (err) res.status(500).send("Internal Server Error");
+        if(err)
+            res.status(500).send("Internal Server Error");
         res.status(200).send(prod);
     });
 });
@@ -25,7 +42,7 @@ router.post('/', (req, res) => {
             description: req.body.description,
             stock: req.body.stock,
             category: req.body.category,
-            url: req.body.url
+            imageUrl: req.body.imageUrl
         }, (err, prod) => {
             if (err) {res.status(500).send('Internal Server Error')};
             res.status(200).send(prod);
@@ -48,7 +65,7 @@ router.put('/:id', (req, res) => {
                 prod.description = req.body.description || prod.description;
                 prod.stock = req.body.stock || prod.stock;
                 prod.category = req.body.category || prod.category;
-                prod.url = req.body.url || prod.url;
+                prod.imageUrl = req.body.imageUrl || prod.imageUrl;
                 prod.save((err, prod) => {
                     if (err)
                         res.status(500).send(err);

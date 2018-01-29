@@ -4,12 +4,38 @@ const should = require('chai').should();
 const expect = require('chai').expect;
 const assert = require('assert').assert;
 const orderController = require('../../src/controllers/Order')();
+const clientController = require('../../src/controllers/Client')();
+const productController = require('../../src/controllers/Product')();
 const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => {});
+var orderObj = {};
 
-const orderObj = { status: 'pending', products: [], client_id: 1 };
+
+    let productObj={ 
+        name: 'test', 
+        price: 1, 
+        description: 'test description' ,
+        stock: 3,category:'other',
+        imageUrl:'https://lh3.googleusercontent.com/5Bra7-aT9kQDI40ZV7HsXg-SXi841bPdQwQt9kh-Nw3GoWkVP5nrkHYMNmNOjLJaIQ=h310',
+    };
+    let clientObj ={
+        name: 'name',
+        lastnamefa: 'lastnamefa',
+        lastnamemo: 'lastnamemo',
+        birthdate: '1985-01-23',
+        address: 'address #281',
+    };
+    let idClient='',idProduct='';
+    clientController.postClient(clientObj).then(async res=>idClient=await res._id).catch();
+    productController.postProduct(productObj).then(async res=>idProduct=await res.id).catch();
+    console.log('idClient',idClient);
+    
+    orderObj = { status: 'pending', products: [{product:idProduct,quantity:1}], client_id:idClient };
+
 
 describe('API Order', function () {
+    console.log('API',orderObj);
+    
     it('GET should fetch all orders', done => {
         supertest(server).get('/api/order')
             .set('Accept', 'application/json')
@@ -19,6 +45,7 @@ describe('API Order', function () {
             .catch(err => done(err));
     });
     it('Should get order /id', done => {
+
         let url = '/api/order';
         orderController.getRandomOrder().then(result => {
             order = result;
@@ -74,6 +101,8 @@ describe('API Order', function () {
     });
 });
 describe('Types Order',function(){
+    console.log('Types',orderObj);
+    
     it('GET the type of all orders', done => {
         supertest(server).get('/api/order')
         .expect(200)
@@ -200,6 +229,7 @@ describe('Types Order',function(){
     });
 });
 describe('Controller Order',function(){
+    console.log('Controller',orderObj);
     it('Get a order',done => {
         orderController.getRandomOrder().then(order=>{
             let id = order._id;

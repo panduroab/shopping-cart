@@ -10,11 +10,23 @@ module.exports = () => ({
                     reject(err);
                 if (order) {
                     let products = [];
-                    for (let product_id of order.products) {
-                        await productController.getProduct(product_id)
+                    for (let product of order.products) {
+                        let cant = product.quantity;
+                        await productController.getProduct(product.product)
                             .then(product => {
-                                if (product._id) {
-                                    products.push(product)
+                                let objAux = {};
+                                objAux._id = product._id;
+                                objAux.name = product.name;
+                                objAux.price = product.price;
+                                objAux.description = product.description;
+                                objAux.stock = product.stock;
+                                objAux.category = product.category;
+                                objAux.quantity = cant;
+                                if (product.id) {
+                                    products.push(objAux);
+                                } else {
+                                    let objAviso = { message: 'id does not exist' }
+                                    products.push(objAviso);
                                 }
                             })
                             .catch(err => reject(err));
@@ -66,21 +78,41 @@ module.exports = () => ({
             });
         })
     },
-    postOrder: (order) => new Promise((resolve, reject) => {
-        if (typeof (order.status) == 'String' &&
-            typeof (order.date) == 'Date' &&
-            Array.isArray(products) &&
-            typeof (order.client_id) == 'String' &&
-            typeof (order.created_at) == 'Date' &&
-            typeof (order.updateOrder) == 'Date' &&
-            typeof (order.deleted_at) == 'Date') {
-            orderModel.create(order, (err, order) => {
-                if (err) { reject(err) }
-                resolve(order);
-            })
+
+    // FIXME: consultar productos y existencias
+    // - comparar existencia con solicitado
+    // - actualizar existencias
+    // - crear orden 
+    postOrder: (order) => new Promise(async (resolve, reject) => {
+        if (Array.isArray(order.products) && typeof (order.products[0].product) === 'string' && typeof (order.products[0].quantity) === 'number') {
+            let rejected_products = [];
+            let stock_products = [];
+            for (let product of order.products) {
+                await productController.getProduct(product.product)
+                    .then(result => {
+                        stock_products.unshift(result.stock);
+                        if (product.quantity > result.stock) {
+                            rejected_products.push(product.product);
+                        }
+                    }).catch(err => reject(err));
+            }
+            let mess = "Products out of stock: " + rejected_products;
+            if (rejected_products.length > 0) resolve(mess);
+            if (rejected_products.length === 0) {
+                orderModel.create(order, async (err, order) => {
+                    if (err) reject(err);
+                    for (let product of order.products) {
+                        let bodyProduct = {
+                            "stock": stock_products.pop()-product.quantity
+                        };
+                        await productController.updateProduct(product.product, bodyProduct);
+                    }
+                    resolve(order);
+                });
+            }
         }
         else {
-            reject();
+            reject(err);
         }
     }),
 
@@ -97,8 +129,8 @@ module.exports = () => ({
             if (err)
                 reject(err);
             let products = [];
-            for (let product_id of order.products) {
-                await productController.getProduct(product_id)
+            for (let product of order.products) {
+                await productController.getProduct(product.product)
                     .then(product => products.push(product))
                     .catch(err => reject(err));
             }
@@ -108,11 +140,11 @@ module.exports = () => ({
 
     getProductsByArr: id => new Promise((resolve, reject) => {
         orderModel.findById({ _id: id }, (err, order) => {
-            if(err)
+            if (err)
                 reject(err);
-            if(!order)
+            if (!order)
                 resolve({});
-            let idArr = order.products;
+            let idArr = order.products.map(product => product.product);
             productController.getProductsArr(idArr)
                 .then(products => resolve(products))
                 .catch(err => reject(err));

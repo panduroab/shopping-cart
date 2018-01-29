@@ -5,8 +5,8 @@ const mongoose = require('mongoose'),
 var OrderSchema = new Schema({
     status:     { type: String, default: 'pending' },
     date:       { type: Date, default: Date.now },
-    products:   { type: Array },
-    client_id:  { type: Object },
+    products:   { type: Array, required: true},
+    client_id:  { type: Object, required: true },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
     deleted_at: { type: Date, default: Date.now }

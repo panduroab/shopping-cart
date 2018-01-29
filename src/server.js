@@ -5,7 +5,6 @@ const app = express();
 const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes');
 const ClientRoutes = require('./routes/clientRoutes');
-const CategoryRoutes = require('./routes/categoryRoutes');
 const path = require('path');
 
 module.exports = config => {
@@ -22,7 +21,6 @@ module.exports = config => {
     app.use('/api/order', OrderRoutes);
     app.use('/api/product', ProductRoutes);
     app.use('/api/client', ClientRoutes);
-    app.use('/api/category', CategoryRoutes);
 
     app.use('/api', (req, res) => {
         res.sendFile(path.join(__dirname + '/api.html'));
