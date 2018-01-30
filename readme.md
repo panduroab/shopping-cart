@@ -28,7 +28,7 @@ After installing the project and start mongod you can use the helper homepage at
 - [Clients](http://localhost:3000/api)
 - [Orders](http://localhost:3000/api)
 - [Search products by name](http://localhost:3000/api/product/search?value=)
-- [Search products by name](http://localhost:3000/api/product/category?=)
+- [Search products by category](http://localhost:3000/api/product/search?category=)
 
 ## Authors
 - [Panduroab](https://github.com/panduroab)

@@ -6,12 +6,15 @@ const OrderRoutes = require('./routes/orderRoutes');
 const ProductRoutes = require('./routes/productRoutes');
 const ClientRoutes = require('./routes/clientRoutes');
 const path = require('path');
+const cors = require('cors');
 
 module.exports = config => {
     if(config.logger)
         app.use(logger(config.logger));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+
+    app.use(cors());
 
     app.get('/', (req, res, next) => {
         res.send(`Shopping Cart API`);
