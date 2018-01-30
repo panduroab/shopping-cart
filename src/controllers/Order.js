@@ -32,9 +32,10 @@ module.exports = () => ({
                             .catch(err => reject(err));
                     }
                     order.products = products;
-                    await clientController.getClient(order.client_id).then(result => {
+                    await clientController.getClient(order.client_id.toString()).then(result => {
                         order.client_id = result;
                     }).catch(err => reject(err));
+                    
                     resolve(order);
                 } else {
                     resolve(order);

@@ -9,7 +9,7 @@ const clientController = require('../../src/controllers/Client')();
 const server = require('../../src/server')({ logger: false });
 const db = require('../../src/db/db')({ domain: '127.0.0.1', port: '27017', dbName: 'shopping-cart' }).then(con => {con.dropDatabase()}).catch(err => {});
 var orderObj = {};
-
+let i=0;
 beforeEach('Register product',async function (){
     let productObj={ 
         name: 'test', 
@@ -158,11 +158,44 @@ describe('Types Order',function(){
         await clientController.postClient(clientObj)
             .then(client => global_client = client).catch(err => {});
     });
+    it('Check that the element post have the correct type',done=>{
+        // let orderObj = {
+        //     products: [
+        //         {
+        //             product: global_product._id.toString(),
+        //             quantity: Math.floor(Math.random()*10)+1
+        //         }
+        //     ],
+        //     client_id: global_product._id.toString()
+        // }; 
+        supertest(server).post('/api/order')
+        .set('Accept', 'application/json')
+        .send(orderObj)
+        .expect(200)
+        .then(res => {        
+            expect(res.body).to.have.property('status');
+            expect(res.body.status).to.not.equal(null);
+            expect(res.body).to.have.property('date');
+            expect(res.body.date).to.not.equal(null);
+            expect(res.body).to.have.property('products');
+            expect(res.body.products).to.not.equal(null);
+            expect(res.body).to.have.property('client_id');
+            expect(res.body.client_id).to.not.equal(null);
+            expect(res.body).to.have.property('created_at');
+            expect(res.body.created_at).to.not.equal(null);
+            expect(res.body).to.have.property('updated_at');
+            expect(res.body.updated_at).to.not.equal(null);
+            expect(res.body).to.have.property('deleted_at');
+            expect(res.body.deleted_at).to.not.equal(null);
+            done();
+        }).catch(err => done(err))
+    });
     it('GET the type of all orders', done => {
         supertest(server).get('/api/order')
         .expect(200)
         .end(function(err,res){
             res.body.forEach((order,index) => {
+
                 expect(order).to.have.property('status');
                 expect(order.status).to.not.equal(null);
                 expect(order).to.have.property('date');
@@ -180,64 +213,6 @@ describe('Types Order',function(){
             });
             done();
         });
-    });
-    it('Get the correct typesfor the JSON',done =>{
-        let url = '/api/order';
-        orderController.getRandomOrder().then(result => {
-            order = result;
-            let id = order._id;
-            supertest(server).get(`${url}/${id}`)
-            .expect(200)
-            .end(function(err,res){
-                expect(res.body).to.have.property('status');
-                expect(res.body.status).to.not.equal(null);
-                expect(res.body).to.have.property('date');
-                expect(res.body.date).to.not.equal(null);
-                expect(res.body).to.have.property('products');
-                expect(res.body.products).to.not.equal(null);
-                expect(res.body).to.have.property('client_id');
-                expect(res.body.client_id).to.not.equal(null);
-                expect(res.body).to.have.property('created_at');
-                expect(res.body.created_at).to.not.equal(null);
-                expect(res.body).to.have.property('updated_at');
-                expect(res.body.updated_at).to.not.equal(null);
-                expect(res.body).to.have.property('deleted_at');
-                expect(res.body.deleted_at).to.not.equal(null);
-                done();
-            });
-        }).catch(err=>{done(err)});
-    });
-    it('Check that the element post have the correct type',done=>{
-        let orderObj = {
-            products: [
-                {
-                    product: global_product._id.toString(),
-                    quantity: Math.floor(Math.random()*10)+1
-                }
-            ],
-            client_id: global_product._id.toString()
-        };
-        supertest(server).post('/api/order')
-        .set('Accept', 'application/json')
-        .send(orderObj)
-        .expect(200)
-        .then(res => {
-            expect(res.body).to.have.property('status');
-            expect(res.body.status).to.not.equal(null);
-            expect(res.body).to.have.property('date');
-            expect(res.body.date).to.not.equal(null);
-            expect(res.body).to.have.property('products');
-            expect(res.body.products).to.not.equal(null);
-            expect(res.body).to.have.property('client_id');
-            expect(res.body.client_id).to.not.equal(null);
-            expect(res.body).to.have.property('created_at');
-            expect(res.body.created_at).to.not.equal(null);
-            expect(res.body).to.have.property('updated_at');
-            expect(res.body.updated_at).to.not.equal(null);
-            expect(res.body).to.have.property('deleted_at');
-            expect(res.body.deleted_at).to.not.equal(null);
-            done();
-        }).catch(err => done(err))
     });
     it('Check that the element deleted have the correct type',done=>{
         let url = '/api/order';
@@ -270,6 +245,32 @@ describe('Types Order',function(){
             let id = result._id;
             supertest(server).put(`/api/order/${id}`)
             .send(order)
+            .expect(200)
+            .end(function(err,res){
+                expect(res.body).to.have.property('status');
+                expect(res.body.status).to.not.equal(null);
+                expect(res.body).to.have.property('date');
+                expect(res.body.date).to.not.equal(null);
+                expect(res.body).to.have.property('products');
+                expect(res.body.products).to.not.equal(null);
+                expect(res.body).to.have.property('client_id');
+                expect(res.body.client_id).to.not.equal(null);
+                expect(res.body).to.have.property('created_at');
+                expect(res.body.created_at).to.not.equal(null);
+                expect(res.body).to.have.property('updated_at');
+                expect(res.body.updated_at).to.not.equal(null);
+                expect(res.body).to.have.property('deleted_at');
+                expect(res.body.deleted_at).to.not.equal(null);
+                done();
+            });
+        }).catch(err=>{done(err)});
+    });
+    it('Get the correct typesfor the JSON',done =>{
+        let url = '/api/order';
+        orderController.getRandomOrder().then(result => {
+            order = result;
+            let id = order._id.toString();
+            supertest(server).get(`${url}/${id}`)
             .expect(200)
             .end(function(err,res){
                 expect(res.body).to.have.property('status');
@@ -386,4 +387,17 @@ describe('Controller Order',function(){
             }).catch(err=>done(err))
         }).catch(err=>done(err));
     });
+});
+afterEach(async function(){
+   
+    await productController.getAllProducts().then(products=>{
+        products.forEach(product=>{
+            productController.deleteProdut(product._id).then().catch();
+        })
+    }).catch()
+    await clientController.getAllClients().then(clients=>{
+        clients.forEach(client=>{
+            clientController.deleteClient(client._id).then().catch();
+        })
+    }).catch()
 });

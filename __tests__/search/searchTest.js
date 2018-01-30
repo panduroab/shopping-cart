@@ -19,9 +19,7 @@ describe('CONTROLLER Product', () => {
                 category: `test ${Math.floor(Math.random()*3)}`
             };
             productController.postProduct(productObj)
-                .then(product => {
-                    //console.log(product);
-                }).catch(err => {});
+                .then(product => {}).catch(err => {});
         }
     });
     it('should search products by name', done => {
