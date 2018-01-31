@@ -45,8 +45,8 @@ module.exports = () => ({
                 if (err || !product) {
                     reject(err);
                 } else {
-                    product.name = body.name;
-                    product.price = body.price;
+                    product.name = body.name || product.name;
+                    product.price = body.price || product.price;
                     product.description = body.description? body.description : product.description;
                     product.stock = body.stock? body.stock : product.stock;
                     product.category = body.category? body.category : product.category;
