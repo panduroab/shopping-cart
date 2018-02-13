@@ -19,11 +19,29 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    ProductModel.find({}, (err, prod) => {
-        if(err)
-            res.status(500).send("Internal Server Error");
-        res.status(200).send(prod);
-    });
+    let pageSize = Number(req.query.items) > 0 ? Number(req.query.items) : 12;
+    let page = req.query.page;
+
+    let category = req.query.category || '';
+    let name = req.query.name || '';
+
+    let query = {
+        name: { $regex: name, $options: 'i' },
+        category: { $regex: category, $options: 'i' },
+    };
+    if(page) {
+        ProductModel.find(query).skip(pageSize * page).limit(pageSize).exec((err, prod) => {
+            if(err)
+                res.status(500).send("Internal Server Error");
+            res.status(200).send(prod);
+        });
+    } else {
+        ProductModel.find({}, (err, prod) => {
+            if(err)
+                res.status(500).send("Internal Server Error");
+            res.status(200).send(prod);
+        });
+    }
 });
 
 router.get('/:id', (req, res) => {

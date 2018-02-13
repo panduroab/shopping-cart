@@ -16,7 +16,7 @@ let productModel = mongoose.model(collectionName, productSchema);
 module.exports = productModel;
 
 module.exports.getByCategory = category => new Promise((resolve, reject) => {
-    productModel.find({ category: category }, (err, products) => {
+    productModel.find({ category: { $regex: category, $options: 'i' }}, (err, products) => {
         if(err)
             reject(err);
         if(products.length < 1)
