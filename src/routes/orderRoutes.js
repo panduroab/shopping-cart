@@ -4,10 +4,23 @@ const OrderModel = require('../db/models/order');
 const orderCrtl = require('../controllers/Order')();
 
 router.get('/', (req, res) => {
-    OrderModel.find({}, (err, order) => {
-        if (err) return res.status(500).send('Internal Server Error');
-        res.status(200).send(order);
-    });
+    let clientId = req.query.clientId;
+    if(clientId) {
+        // TODO: Verify existent client
+        OrderModel.find({ client_id: clientId }, (err, orders) => {
+            if (err)
+                return res.status(500).send('Internal Server Error');
+            if (orders.length < 1)
+                res.status(204).send('Client has no orders yet');
+            else
+                res.status(200).send(orders);
+        });
+    } else {
+        OrderModel.find({}, (err, order) => {
+            if (err) return res.status(500).send('Internal Server Error');
+            res.status(200).send(order);
+        });
+    }
 });
 
 router.post('/', (req, response) => {
